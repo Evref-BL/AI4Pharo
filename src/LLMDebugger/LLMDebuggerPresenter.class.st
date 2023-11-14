@@ -166,7 +166,7 @@ LLMDebuggerPresenter >> initializePresenters [
 
 	"There are no widget for the moment."
 
-	prompt := self newTextInput.
+	prompt := self newText.
 	prompt text: 'Explain the bug'.
 	promptMethodList := self newDropList.
 	promptMethodList items: { #executePrompt:. #executeOllamaPrompt: . #executeOpenAIPrompt: }.

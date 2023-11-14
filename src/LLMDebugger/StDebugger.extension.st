@@ -26,10 +26,19 @@ StDebugger >> generateMethodFor: msg in: class [
 	object := OARequestObject new.
 
 	aPrompt := String streamContents: [ :stream |
+		           stream << '## Usage example'.
+		           stream << String crlf.
+		           stream << self stack second method sourceCode.
+		           stream << String crlf.
+		           stream << '## Definition'.
+		           stream << String crlf.
+		           stream << 'Class Name: '.
+		           stream << class name.
+		           stream << String crlf.
 		           stream << 'Class methods: '.
 		           class methods
 			           do: [ :m | stream << m name printString ]
-			           separatedBy: [ ',' ].
+			           separatedBy: [ stream << ', ' ].
 		           stream << String crlf.
 		           stream << 'Generate the Pharo method '.
 		           stream << msg selector.

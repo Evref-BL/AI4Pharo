@@ -28,7 +28,7 @@ StLLMDefineMethodCommand class >> defaultShortcut [
 { #category : #testing }
 StLLMDefineMethodCommand >> appliesTo: aDebugger [
 
-	^ true
+	^ aDebugger canExecuteCreateMissingMethodCommand
 ]
 
 { #category : #executing }
