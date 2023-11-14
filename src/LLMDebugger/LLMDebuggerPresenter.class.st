@@ -1,5 +1,5 @@
 Class {
-	#name : #AIDebuggerPresenter,
+	#name : #LLMDebuggerPresenter,
 	#superclass : #SpPresenter,
 	#traits : 'TStDebuggerExtension',
 	#classTraits : 'TStDebuggerExtension classTrait',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #prompting }
-AIDebuggerPresenter >> buildExplainPrompt [
+LLMDebuggerPresenter >> buildExplainPrompt [
 
 	^ String streamContents: [ :stream |
 		  stream
@@ -44,25 +44,25 @@ Error Name: '.
 ]
 
 { #category : #prompting }
-AIDebuggerPresenter >> buildPrompt [
+LLMDebuggerPresenter >> buildPrompt [
 
 	^ prompt text
 ]
 
 { #category : #initialization }
-AIDebuggerPresenter >> currentStDebuggerContext [
+LLMDebuggerPresenter >> currentStDebuggerContext [
    "A 'shortcut' to get the same currentContext of the StDebugger"
    ^ debugger stDebugger currentContext
 ]
 
 { #category : #'debugger extension' }
-AIDebuggerPresenter >> debuggerExtensionToolName [
+LLMDebuggerPresenter >> debuggerExtensionToolName [
 	
-	^ 'AI Debugger'
+	^ 'LLM Debugger'
 ]
 
 { #category : #initialization }
-AIDebuggerPresenter >> defaultLayout [
+LLMDebuggerPresenter >> defaultLayout [
 	"An empty vertical box layout, for the moment"
 
 	^ SpBoxLayout newTopToBottom
@@ -78,7 +78,7 @@ AIDebuggerPresenter >> defaultLayout [
 ]
 
 { #category : #prompting }
-AIDebuggerPresenter >> executePrompt: aPrompt [
+LLMDebuggerPresenter >> executePrompt: aPrompt [
 
 	| api answer |
 	api := HFAPI new.
@@ -91,7 +91,7 @@ AIDebuggerPresenter >> executePrompt: aPrompt [
 ]
 
 { #category : #initialization }
-AIDebuggerPresenter >> initializePresenters [
+LLMDebuggerPresenter >> initializePresenters [
 	"Called automatically by the Spec framework. This method describes how the widgets are initialized"
 
 	"There are no widget for the moment."
@@ -108,14 +108,14 @@ AIDebuggerPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-AIDebuggerPresenter >> setModelBeforeInitialization: aDebugger [
+LLMDebuggerPresenter >> setModelBeforeInitialization: aDebugger [
 
-	debugger := AIDebugger new.
+	debugger := LLMDebugger new.
 	debugger stDebugger: aDebugger
 ]
 
 { #category : #initialization }
-AIDebuggerPresenter >> updatePresenter [
+LLMDebuggerPresenter >> updatePresenter [
    "Called automatically when the debugger updates its state after stepping"
    "Your widgets should be updated here."
    super updatePresenter

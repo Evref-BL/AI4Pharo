@@ -1,5 +1,5 @@
 Class {
-	#name : #AIDebugger,
+	#name : #LLMDebugger,
 	#superclass : #Object,
 	#instVars : [
 		'stDebugger'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #accessing }
-AIDebugger >> stDebugger [
+LLMDebugger >> stDebugger [
 
 	^ stDebugger
 ]
 
 { #category : #accessing }
-AIDebugger >> stDebugger: anObject [
+LLMDebugger >> stDebugger: anObject [
 
 	stDebugger := anObject
 ]
