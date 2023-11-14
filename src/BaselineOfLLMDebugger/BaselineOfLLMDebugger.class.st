@@ -24,7 +24,11 @@ BaselineOfLLMDebugger >> defineDependencies: spec [
 	spec
 		baseline: 'PharoOllama'
 		with: [
-		spec repository: 'github://Evref-BL/Pharo-OllamaAPI:main/src' ]
+		spec repository: 'github://Evref-BL/Pharo-OllamaAPI:main/src' ].
+	spec
+		baseline: 'PharoOpenAIAPI'
+		with: [
+		spec repository: 'github://Evref-BL/Pharo-OpenAI:main/src' ]
 ]
 
 { #category : #baselines }

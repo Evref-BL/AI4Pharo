@@ -93,7 +93,7 @@ LLMDebuggerPresenter >> debuggerExtensionToolName [
 	^ 'LLM Debugger'
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 LLMDebuggerPresenter >> defaultLayout [
 	"An empty vertical box layout, for the moment"
 
@@ -129,6 +129,24 @@ LLMDebuggerPresenter >> executeOllamaPrompt: aPrompt [
 ]
 
 { #category : #prompting }
+LLMDebuggerPresenter >> executeOpenAIPrompt: aPrompt [
+
+	| answer api object openAIResult |
+	api := OAApi new.
+	object := OARequestObject new.
+
+	object addMessage: (OARequestMessage new
+			 content: aPrompt;
+			 yourself).
+
+	api content: object.
+	openAIResult := api perform.
+
+	answer := openAIResult choices anyOne message at: #content.
+	self updateResultText: answer
+]
+
+{ #category : #prompting }
 LLMDebuggerPresenter >> executePrompt: aPrompt [
 
 	| api answer |
@@ -149,7 +167,7 @@ LLMDebuggerPresenter >> initializePresenters [
 	prompt := self newTextInput.
 	prompt text: 'Explain the bug'.
 	promptMethodList := self newDropList.
-	promptMethodList items: { #executePrompt:. #executeOllamaPrompt: }.
+	promptMethodList items: { #executePrompt:. #executeOllamaPrompt: . #executeOpenAIPrompt: }.
 
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
@@ -172,7 +190,7 @@ LLMDebuggerPresenter >> initializePresenters [
 	result := self instantiate: MicrodownPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - model' }
 LLMDebuggerPresenter >> setModelBeforeInitialization: aDebugger [
 
 	debugger := LLMDebugger new.
