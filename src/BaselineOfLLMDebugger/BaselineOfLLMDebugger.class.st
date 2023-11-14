@@ -40,5 +40,5 @@ BaselineOfLLMDebugger >> definePackages: spec [
 
 	spec
 		package: 'LLMDebugger'
-		with: [ spec requires: #( 'PharoHuggingFace' 'PharoOllama' ) ]
+		with: [ spec requires: #( 'PharoHuggingFace' 'PharoOllama' 'PharoOpenAIAPI' ) ]
 ]
