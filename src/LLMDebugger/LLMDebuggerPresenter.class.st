@@ -8,7 +8,8 @@ Class {
 		'prompt',
 		'explainButton',
 		'promptButton',
-		'result'
+		'result',
+		'solveButton'
 	],
 	#category : #LLMDebugger
 }
@@ -49,6 +50,35 @@ LLMDebuggerPresenter >> buildPrompt [
 	^ prompt text
 ]
 
+{ #category : #prompting }
+LLMDebuggerPresenter >> buildSolvePrompt [
+
+	^ String streamContents: [ :stream |
+		  stream
+		  <<
+			  'You are a smalltalk debugging assistant. Propose the code that solves the bug. I give the the error name, then the code of the methods in the stack trace separated by ---.
+	
+Error Name: '.
+		  stream
+		  <<
+		  self debugger stDebugger debuggerActionModel
+			  statusStringForContext.
+		  stream << String lf.
+		  stream << String lf.
+		  stream << '---'.
+		  stream << String lf.
+
+		  ((self debugger stDebugger debuggerActionModel session
+			   stackOfSize: 5) copyFrom: 2 to: 5 ) reverse
+			  do: [ :stack | stream << stack sourceCode ]
+			  separatedBy: [
+				  stream << String lf.
+				  stream << String lf.
+				  stream << '---'.
+				  stream << String lf ].
+			 ]
+]
+
 { #category : #initialization }
 LLMDebuggerPresenter >> currentStDebuggerContext [
    "A 'shortcut' to get the same currentContext of the StDebugger"
@@ -70,6 +100,7 @@ LLMDebuggerPresenter >> defaultLayout [
 		  add: (SpBoxLayout newLeftToRight
 				   add: #promptButton;
 				   add: #explainButton;
+				   add: #solveButton;
 				   yourself)
 		  withConstraints: [ :constraints |
 		  constraints height: self class toolbarHeight ];
@@ -104,6 +135,9 @@ LLMDebuggerPresenter >> initializePresenters [
 	explainButton := self newButton.
 	explainButton label: 'Explain!'.
 	explainButton action: [ self executePrompt: self buildExplainPrompt ].
+	solveButton := self newButton.
+	solveButton label: 'Solve!'.
+	solveButton action: [ self executePrompt: self buildSolvePrompt ].
 	result := (self instantiate: MicrodownPresenter)
 ]
 
