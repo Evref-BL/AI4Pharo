@@ -56,14 +56,14 @@ LLMDebuggerPresenter >> buildSolvePrompt [
 	^ String streamContents: [ :stream |
 		  stream
 		  <<
-			  'You are a smalltalk debugging assistant. Propose the code that solves the bug. I give the the error name, then the code of the methods in the stack trace separated by ---.
-	
-Error Name: '.
+			  'In smalltalk.
+I have this error: '.
 		  stream
 		  <<
 		  self debugger stDebugger debuggerActionModel
 			  statusStringForContext.
 		  stream << String lf.
+		stream << 'This is the trace context in between ---'.
 		  stream << String lf.
 		  stream << '---'.
 		  stream << String lf.
@@ -76,6 +76,7 @@ Error Name: '.
 				  stream << String lf.
 				  stream << '---'.
 				  stream << String lf ].
+			stream << 'Write the code to solve this issue!'
 			 ]
 ]
 
@@ -109,14 +110,28 @@ LLMDebuggerPresenter >> defaultLayout [
 ]
 
 { #category : #prompting }
+LLMDebuggerPresenter >> executeOllamaPrompt: aPrompt [
+
+	| answer ollama |
+	ollama := OllamaAPI new.
+	ollama model: OCodeLlamaModel new.
+	ollama model tag: '7b'.
+	ollama temperature: 0.5.
+	ollama num_predict: 100.
+	ollama top_p: 0.5.
+
+	answer := ollama query: aPrompt.
+	self updateResultText: answer
+]
+
+{ #category : #prompting }
 LLMDebuggerPresenter >> executePrompt: aPrompt [
 
 	| api answer |
 	api := HFAPI new.
 	api model: HFMistralInstructModel new.
 	api return_full_text: false.
-	api max_new_tokens: 200.
-	api max_time: 10.
+	api max_new_tokens: 250.
 	answer := api query: aPrompt.
 	self updateResultText: answer
 ]
@@ -131,13 +146,13 @@ LLMDebuggerPresenter >> initializePresenters [
 	prompt text: 'Explain the bug'.
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
-	promptButton action: [ self executePrompt: self buildPrompt ].
+	promptButton action: [ self executeOllamaPrompt: self buildPrompt ].
 	explainButton := self newButton.
 	explainButton label: 'Explain!'.
-	explainButton action: [ self executePrompt: self buildExplainPrompt ].
+	explainButton action: [ self executeOllamaPrompt: self buildExplainPrompt ].
 	solveButton := self newButton.
 	solveButton label: 'Solve!'.
-	solveButton action: [ self executePrompt: self buildSolvePrompt ].
+	solveButton action: [ self executeOllamaPrompt: self buildSolvePrompt ].
 	result := (self instantiate: MicrodownPresenter)
 ]
 
