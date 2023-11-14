@@ -20,7 +20,11 @@ BaselineOfLLMDebugger >> defineDependencies: spec [
 	spec
 		baseline: 'PharoHuggingFace'
 		with: [
-		spec repository: 'github://Evref-BL/Pharo-HuggingFace:main/src' ]
+		spec repository: 'github://Evref-BL/Pharo-HuggingFace:main/src' ].
+	spec
+		baseline: 'PharoOllama'
+		with: [
+		spec repository: 'github://Evref-BL/Pharo-OllamaAPI:main/src' ]
 ]
 
 { #category : #baselines }
