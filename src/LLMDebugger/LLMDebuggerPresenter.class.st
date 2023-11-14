@@ -9,11 +9,20 @@ Class {
 		'explainButton',
 		'promptButton',
 		'result',
+		'rawResult',
 		'solveButton',
 		'promptMethodList'
 	],
 	#category : #LLMDebugger
 }
+
+{ #category : #'debugger extension' }
+LLMDebuggerPresenter >> appendResultText: aString [
+
+	rawResult ifNil: [ rawResult := '' ].
+	rawResult := rawResult , aString.
+	result document: (Microdown parse: rawResult)
+]
 
 { #category : #prompting }
 LLMDebuggerPresenter >> buildExplainPrompt [
@@ -118,16 +127,24 @@ LLMDebuggerPresenter >> defaultLayout [
 { #category : #prompting }
 LLMDebuggerPresenter >> executeOllamaPrompt: aPrompt [
 
-	| answer ollama |
+	| answer ollama reader |
+	[
 	ollama := OllamaAPI new.
 	ollama model: OCodeLlamaModel new.
 	ollama model tag: '7b'.
 	ollama temperature: 0.5.
 	ollama num_predict: 100.
 	ollama top_p: 0.5.
+	ollama stream: true.
 
 	answer := ollama query: aPrompt.
-	self updateResultText: answer
+	reader := NeoJSONReader on: (ZnCharacterReadStream on: answer).
+	[ reader atEnd ] whileFalse: [
+		| val |
+		val := reader next.
+		self appendResultText: (val at: #response).
+		(val at: #done) ifTrue: [ answer close ] ] ] forkAt:
+		Processor lowIOPriority
 ]
 
 { #category : #prompting }
@@ -209,5 +226,6 @@ LLMDebuggerPresenter >> updatePresenter [
 { #category : #'debugger extension' }
 LLMDebuggerPresenter >> updateResultText: aString [
 
-	result document: (Microdown parse: aString)
+	rawResult ifNil: [ rawResult := aString ].
+	result document: (Microdown parse: rawResult)
 ]
