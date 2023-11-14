@@ -53,32 +53,34 @@ LLMDebuggerPresenter >> buildPrompt [
 
 { #category : #prompting }
 LLMDebuggerPresenter >> buildSolvePrompt [
-
 	^ String streamContents: [ :stream |
 		  stream
-		  <<
-			  'In smalltalk.
+		  << 'You are a inline suggestion for code completion in an IDE.
 I have this error: '.
 		  stream
 		  <<
 		  self debugger stDebugger debuggerActionModel
 			  statusStringForContext.
 		  stream << String lf.
-		stream << 'This is the trace context in between ---'.
+		  stream << 'This is the trace context in between ---'.
 		  stream << String lf.
 		  stream << '---'.
 		  stream << String lf.
 
 		  ((self debugger stDebugger debuggerActionModel session
-			   stackOfSize: 5) copyFrom: 2 to: 5 ) reverse
+			    stackOfSize: 5) copyFrom: 2 to: 5) reverse
 			  do: [ :stack | stream << stack sourceCode ]
 			  separatedBy: [
 				  stream << String lf.
 				  stream << String lf.
 				  stream << '---'.
 				  stream << String lf ].
-			stream << 'Write the code to solve this issue!'
-			 ]
+		  stream << String lf.
+		  stream << '---'.
+		  stream << String lf.
+		  stream
+		  <<
+		  'Do not provide any comment. Generate only the code to solve this issue!' ]
 ]
 
 { #category : #initialization }

@@ -1,0 +1,49 @@
+Extension { #name : #StDebugger }
+
+{ #category : #'*LLMDebugger' }
+StDebugger >> createMissingMethodAndGenerate [
+
+	| msg chosenClass |
+	self flag: #DBG_MISSINGTEST.
+	msg := self interruptedContext tempAt: 1.
+	[ 
+	chosenClass := self requestClassFrom:
+		               self interruptedContext receiver class.
+	self createMissingMethodFor: msg in: chosenClass ]
+		on: Abort
+		do: [ ^ self ].
+	
+	code text: (self generateMethodFor: msg in: chosenClass).
+	
+	code takeKeyboardFocus 
+]
+
+{ #category : #'*LLMDebugger' }
+StDebugger >> generateMethodFor: msg in: class [
+
+	| api object aPrompt openAIResult |
+	api := OAApi new.
+	object := OARequestObject new.
+
+	aPrompt := String streamContents: [ :stream |
+		           stream << 'Class methods: '.
+		           class methods
+			           do: [ :m | stream << m name printString ]
+			           separatedBy: [ ',' ].
+		           stream << String crlf.
+		           stream << 'Generate the Pharo method '.
+		           stream << msg selector.
+		           stream << String crlf.
+		           stream << 'The Method has '.
+		           stream << msg arguments size printString.
+		           stream << ' arguments.' ].
+	aPrompt recordInfo.
+	object addMessage: (OARequestMessage new
+			 content: aPrompt;
+			 yourself).
+
+	api content: object.
+	openAIResult := api perform.
+
+	^ openAIResult choices anyOne message at: #content
+]
