@@ -9,7 +9,8 @@ Class {
 		'explainButton',
 		'promptButton',
 		'result',
-		'solveButton'
+		'solveButton',
+		'promptMethodList'
 	],
 	#category : #LLMDebugger
 }
@@ -98,6 +99,9 @@ LLMDebuggerPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #prompt;
+		  add: #promptMethodList
+		  withConstraints: [ :constraints |
+			  constraints height: self class toolbarHeight ];
 		  add: (SpBoxLayout newLeftToRight
 				   add: #promptButton;
 				   add: #explainButton;
@@ -144,16 +148,28 @@ LLMDebuggerPresenter >> initializePresenters [
 
 	prompt := self newTextInput.
 	prompt text: 'Explain the bug'.
+	promptMethodList := self newDropList.
+	promptMethodList items: { #executePrompt:. #executeOllamaPrompt: }.
+
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
-	promptButton action: [ self executeOllamaPrompt: self buildPrompt ].
+	promptButton action: [
+		self
+			perform: promptMethodList selectedItem
+			withArguments: { self buildPrompt } ].
 	explainButton := self newButton.
 	explainButton label: 'Explain!'.
-	explainButton action: [ self executeOllamaPrompt: self buildExplainPrompt ].
+	explainButton action: [
+		self
+			perform: promptMethodList selectedItem
+			withArguments: { self buildExplainPrompt } ].
 	solveButton := self newButton.
 	solveButton label: 'Solve!'.
-	solveButton action: [ self executeOllamaPrompt: self buildSolvePrompt ].
-	result := (self instantiate: MicrodownPresenter)
+	solveButton action: [
+		self
+			perform: promptMethodList selectedItem
+			withArguments: { self buildSolvePrompt } ].
+	result := self instantiate: MicrodownPresenter
 ]
 
 { #category : #initialization }
