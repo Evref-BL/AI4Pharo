@@ -87,7 +87,7 @@ LLMDebuggerPresenter >> executePrompt: aPrompt [
 	api max_new_tokens: 200.
 	api max_time: 10.
 	answer := api query: aPrompt.
-	result text: answer
+	self updateResultText: answer
 ]
 
 { #category : #initialization }
@@ -104,7 +104,7 @@ LLMDebuggerPresenter >> initializePresenters [
 	explainButton := self newButton.
 	explainButton label: 'Explain!'.
 	explainButton action: [ self executePrompt: self buildExplainPrompt ].
-	result := self newText
+	result := (self instantiate: MicrodownPresenter)
 ]
 
 { #category : #initialization }
@@ -119,4 +119,10 @@ LLMDebuggerPresenter >> updatePresenter [
    "Called automatically when the debugger updates its state after stepping"
    "Your widgets should be updated here."
    super updatePresenter
+]
+
+{ #category : #'debugger extension' }
+LLMDebuggerPresenter >> updateResultText: aString [
+
+	result document: (Microdown parse: aString)
 ]
