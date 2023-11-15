@@ -2,7 +2,8 @@ Class {
 	#name : #LLMDebugger,
 	#superclass : #Object,
 	#instVars : [
-		'stDebugger'
+		'stDebugger',
+		'history'
 	],
 	#classInstVars : [
 		'defaultPromptModel'
@@ -33,11 +34,59 @@ LLMDebugger class >> llmDebuggerSettings: aBuilder [
 			(aBuilder pickOne: #defaultPromptModel)
 				label: 'Default LLM for the LLMDebugger';
 				target: self;
-				default: #executePrompt:;
+				default: #executePrompt;
 				domainValues: {
-						('OpenAI' -> #executeOpenAIPrompt:).
-						('HuggingFace' -> #executePrompt:).
-						('Ollama' -> #executeOllamaPrompt:) } ]
+						('OpenAI' -> #executeOpenAIPrompt).
+						('HuggingFace' -> #executePrompt).
+						('Ollama' -> #executeOllamaPrompt) } ]
+]
+
+{ #category : #adding }
+LLMDebugger >> addLLMSaid: aLLMPrompt [
+
+	self history addMessage: (LLMMessage llmSaid: aLLMPrompt)
+]
+
+{ #category : #adding }
+LLMDebugger >> addUserSaid: aLLMPrompt [
+
+	self history addMessage: (LLMMessage iSaid: aLLMPrompt)
+]
+
+{ #category : #accessing }
+LLMDebugger >> buildPrompt [
+
+	^ (String streamContents: [ :str |
+		   self history messageStack
+			   do: [ :message |
+				   str
+					   << message user;
+					   << ':'.
+				   str << String crlf.
+				   str << String crlf.
+				   str << message text ]
+			   separatedBy: [
+				   str << String crlf.
+				   str << String crlf ] ]) recordInfo
+]
+
+{ #category : #accessing }
+LLMDebugger >> history [
+
+	^ history
+]
+
+{ #category : #accessing }
+LLMDebugger >> history: anObject [
+
+	history := anObject
+]
+
+{ #category : #accessing }
+LLMDebugger >> initialize [
+
+	super initialize.
+	history := LLMHistory new
 ]
 
 { #category : #accessing }

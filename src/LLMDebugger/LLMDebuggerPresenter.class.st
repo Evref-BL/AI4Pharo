@@ -25,71 +25,76 @@ LLMDebuggerPresenter >> appendResultText: aString [
 ]
 
 { #category : #prompting }
-LLMDebuggerPresenter >> buildExplainPrompt [
+LLMDebuggerPresenter >> createExplainPrompt [
 
-	^ String streamContents: [ :stream |
-		  stream
-		  <<
-			  'You are a smalltalk debugging assistant. Give me all pertinent information that I need to debug the error reported below. I give the the error name, then the code of the methods in the stack trace separated by ---.
+	self debugger addUserSaid: (String streamContents: [ :stream |
+			 stream
+			 <<
+				 'You are a smalltalk debugging assistant. Give me all pertinent information that I need to debug the error reported below. I give the the error name, then the code of the methods in the stack trace separated by ---.
 	
 Error Name: '.
-		  stream
-		  <<
-		  self debugger stDebugger debuggerActionModel
-			  statusStringForContext.
-		  stream << String lf.
-		  stream << String lf.
-		  stream << '---'.
-		  stream << String lf.
+			 stream
+			 <<
+			 self debugger stDebugger debuggerActionModel
+				 statusStringForContext.
+			 stream << String lf.
+			 stream << String lf.
+			 stream << '---'.
+			 stream << String lf.
 
-		  ((self debugger stDebugger debuggerActionModel session
-			   stackOfSize: 5) copyFrom: 2 to: 5 ) reverse
-			  do: [ :stack | stream << stack sourceCode ]
-			  separatedBy: [
-				  stream << String lf.
-				  stream << String lf.
-				  stream << '---'.
-				  stream << String lf ].
-			
-			stream << 'Finally propose the code that solves the bug' ]
+			 ((self debugger stDebugger debuggerActionModel session
+				   stackOfSize: 5) copyFrom: 2 to: 5) reverse
+				 do: [ :stack | stream << stack sourceCode ]
+				 separatedBy: [
+					 stream << String lf.
+					 stream << String lf.
+					 stream << '---'.
+					 stream << String lf ].
+
+			 stream << 'Finally propose the code that solves the bug' ])
 ]
 
 { #category : #prompting }
-LLMDebuggerPresenter >> buildPrompt [
+LLMDebuggerPresenter >> createPrompt [
+	"
+	1. Je cronstruit le nouveau text que je veux faire
+	2. J'ajoute le nouveau text dans mon history
+	"
 
-	^ prompt text
+	self debugger addUserSaid: prompt text
 ]
 
 { #category : #prompting }
-LLMDebuggerPresenter >> buildSolvePrompt [
-	^ String streamContents: [ :stream |
-		  stream
-		  << 'You are a inline suggestion for code completion in an IDE.
+LLMDebuggerPresenter >> createSolvePrompt [
+
+	self debugger addUserSaid: (String streamContents: [ :stream |
+			 stream
+			 << 'You are a inline suggestion for code completion in an IDE.
 I have this error: '.
-		  stream
-		  <<
-		  self debugger stDebugger debuggerActionModel
-			  statusStringForContext.
-		  stream << String lf.
-		  stream << 'This is the trace context in between ---'.
-		  stream << String lf.
-		  stream << '---'.
-		  stream << String lf.
+			 stream
+			 <<
+			 self debugger stDebugger debuggerActionModel
+				 statusStringForContext.
+			 stream << String lf.
+			 stream << 'This is the trace context in between ---'.
+			 stream << String lf.
+			 stream << '---'.
+			 stream << String lf.
 
-		  ((self debugger stDebugger debuggerActionModel session
-			    stackOfSize: 5) copyFrom: 2 to: 5) reverse
-			  do: [ :stack | stream << stack sourceCode ]
-			  separatedBy: [
-				  stream << String lf.
-				  stream << String lf.
-				  stream << '---'.
-				  stream << String lf ].
-		  stream << String lf.
-		  stream << '---'.
-		  stream << String lf.
-		  stream
-		  <<
-		  'Do not provide any comment. Generate only the code to solve this issue!' ]
+			 ((self debugger stDebugger debuggerActionModel session
+				   stackOfSize: 5) copyFrom: 2 to: 5) reverse
+				 do: [ :stack | stream << stack sourceCode ]
+				 separatedBy: [
+					 stream << String lf.
+					 stream << String lf.
+					 stream << '---'.
+					 stream << String lf ].
+			 stream << String lf.
+			 stream << '---'.
+			 stream << String lf.
+			 stream
+			 <<
+			 'Do not provide any comment. Generate only the code to solve this issue!' ])
 ]
 
 { #category : #initialization }
@@ -128,7 +133,7 @@ LLMDebuggerPresenter >> defaultLayout [
 ]
 
 { #category : #prompting }
-LLMDebuggerPresenter >> executeOllamaPrompt: aPrompt [
+LLMDebuggerPresenter >> executeOllamaPrompt [
 
 	| answer ollama reader |
 	[
@@ -140,44 +145,46 @@ LLMDebuggerPresenter >> executeOllamaPrompt: aPrompt [
 	ollama top_p: 0.5.
 	ollama stream: true.
 
-	answer := ollama query: aPrompt.
+	answer := ollama query: self debugger buildPrompt.
 	reader := NeoJSONReader on: (ZnCharacterReadStream on: answer).
 	[ reader atEnd ] whileFalse: [
 		| val |
 		val := reader next.
 		self appendResultText: (val at: #response).
-		(val at: #done) ifTrue: [ answer close ] ] ] forkAt:
+		(val at: #done) ifTrue: [ answer close. self debugger addLLMSaid: rawResult ] ] ] forkAt:
 		Processor lowIOPriority
 ]
 
 { #category : #prompting }
-LLMDebuggerPresenter >> executeOpenAIPrompt: aPrompt [
+LLMDebuggerPresenter >> executeOpenAIPrompt [
 
 	| answer api object openAIResult |
 	api := OAApi new.
 	object := OARequestObject new.
 
 	object addMessage: (OARequestMessage new
-			 content: aPrompt;
+			 content: (self debugger buildPrompt);
 			 yourself).
 
 	api content: object.
 	openAIResult := api perform.
 
 	answer := openAIResult choices anyOne message at: #content.
-	self updateResultText: answer
+	self updateResultText: answer.
+	self debugger addLLMSaid: rawResult
 ]
 
 { #category : #prompting }
-LLMDebuggerPresenter >> executePrompt: aPrompt [
+LLMDebuggerPresenter >> executePrompt [
 
 	| api answer |
 	api := HFAPI new.
 	api model: HFMistralInstructModel new.
 	api return_full_text: false.
 	api max_new_tokens: 250.
-	answer := api query: aPrompt.
-	self updateResultText: answer
+	answer := api query: self debugger buildPrompt.
+	self updateResultText: answer.
+	self debugger addLLMSaid: rawResult
 ]
 
 { #category : #initialization }
@@ -190,29 +197,26 @@ LLMDebuggerPresenter >> initializePresenters [
 	prompt text: 'Explain the bug'.
 	promptMethodList := self newDropList.
 	promptMethodList items:
-		{ #executePrompt:. #executeOllamaPrompt:. #executeOpenAIPrompt: }.
+		{ #executePrompt. #executeOllamaPrompt. #executeOpenAIPrompt }.
 	promptMethodList selectItem: self debugger class defaultPromptModel.
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
 	promptButton action: [
 		self resetResultText.
-		self
-			perform: promptMethodList selectedItem
-			withArguments: { self buildPrompt } ].
+		self createPrompt.
+		self perform: promptMethodList selectedItem ].
 	explainButton := self newButton.
 	explainButton label: 'Explain!'.
 	explainButton action: [
 		self resetResultText.
-		self
-			perform: promptMethodList selectedItem
-			withArguments: { self buildExplainPrompt } ].
+		self createExplainPrompt.
+		self perform: promptMethodList selectedItem ].
 	solveButton := self newButton.
 	solveButton label: 'Solve!'.
 	solveButton action: [
 		self resetResultText.
-		self
-			perform: promptMethodList selectedItem
-			withArguments: { self buildSolvePrompt } ].
+		self createSolvePrompt.
+		self perform: promptMethodList selectedItem ].
 	result := self instantiate: MicrodownPresenter
 ]
 
