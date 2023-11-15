@@ -191,7 +191,7 @@ LLMDebuggerPresenter >> initializePresenters [
 	promptMethodList := self newDropList.
 	promptMethodList items:
 		{ #executePrompt:. #executeOllamaPrompt:. #executeOpenAIPrompt: }.
-
+	promptMethodList selectItem: self debugger class defaultPromptModel.
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
 	promptButton action: [
