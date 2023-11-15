@@ -57,17 +57,23 @@ LLMDebugger >> addUserSaid: aLLMPrompt [
 LLMDebugger >> buildPrompt [
 
 	^ (String streamContents: [ :str |
-		   self history messageStack
-			   do: [ :message |
-				   str
-					   << message user;
-					   << ':'.
-				   str << String crlf.
-				   str << String crlf.
-				   str << message text ]
-			   separatedBy: [
-				   str << String crlf.
-				   str << String crlf ] ]) recordInfo
+		   str
+		   <<
+		   'You are talking with a chatbot. The chat history is as follows:'.
+		   str << String crlf.
+
+		   self history messageStack do: [ :message |
+			   str
+				   << '[';
+				   << message user;
+				   << ']';
+				   << ':'.
+			   str << message text.
+			   str << String crlf ].
+		   str
+		   <<
+		   '"Now, you are asking to answer the following question. Generate a response' ])
+		  recordInfo
 ]
 
 { #category : #accessing }
