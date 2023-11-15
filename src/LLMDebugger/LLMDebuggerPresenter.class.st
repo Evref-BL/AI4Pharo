@@ -138,8 +138,8 @@ LLMDebuggerPresenter >> executeOllamaPrompt [
 	| answer ollama reader |
 	[
 	ollama := OllamaAPI new.
-	ollama model: OLlamaModel new.
-	ollama model tag: 'latest'.
+	ollama model: OCodeLlamaModel new.
+	ollama model tag: '7b'.
 	ollama temperature: 0.5.
 	ollama num_predict: 150.
 	ollama top_p: 0.5.

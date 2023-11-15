@@ -56,24 +56,47 @@ LLMDebugger >> addUserSaid: aLLMPrompt [
 { #category : #accessing }
 LLMDebugger >> buildPrompt [
 
-	^ (String streamContents: [ :str |
-		   str
-		   <<
-		   'You are talking with a chatbot. The chat history is as follows:'.
-		   str << String crlf.
+	| context |
+	context := String streamContents: [ :stream |
+		           stream << 'ERROR: '.
 
-		   self history messageStack do: [ :message |
-			   str
-				   << '[';
-				   << message user;
-				   << ']';
-				   << ':'.
-			   str << message text.
-			   str << String crlf ].
-		   str
-		   <<
-		   '"Now, you are asking to answer the following question. Generate a response' ])
-		  recordInfo
+		           stream
+		           <<
+		           self stDebugger debuggerActionModel
+			           statusStringForContext.
+		           stream << String crlf.
+		           stream << 'Error stack:'.
+		           stream << String crlf.
+		           self stDebugger debuggerActionModel
+			           statusStringForContext.
+		           stream << String lf.
+		           stream << '---'.
+		           stream << String lf.
+
+		           ((self stDebugger debuggerActionModel session
+			             stackOfSize: 5) copyFrom: 2 to: 5) reverse
+			           do: [ :stack | stream << stack sourceCode ]
+			           separatedBy: [
+				           stream << String lf.
+				           stream << String lf.
+				           stream << '---'.
+				           stream << String lf ] ].
+
+	^ LLMPromptBuilder new
+		  role: 'You are a debugging smalltalk assistant chatbot';
+		  history: self history;
+		  context: context;
+		  buildPrompt
+]
+
+{ #category : #accessing }
+LLMDebugger >> buildPrompt: context [
+
+	^ LLMPromptBuilder new
+		role: 'You are a debugging assistant chatbot';
+		context: context;
+		history: self history;
+		buildPrompt
 ]
 
 { #category : #accessing }
