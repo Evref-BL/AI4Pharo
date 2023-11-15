@@ -45,7 +45,9 @@ StDebugger >> generateMethodFor: msg in: class [
 		           stream << String crlf.
 		           stream << 'The Method has '.
 		           stream << msg arguments size printString.
-		           stream << ' arguments.' ].
+		           stream << ' arguments.'.
+		           stream << String crlf.
+		           stream << 'Generate the code' ].
 	aPrompt recordInfo.
 	object addMessage: (OARequestMessage new
 			 content: aPrompt;

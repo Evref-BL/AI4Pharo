@@ -186,27 +186,37 @@ LLMDebuggerPresenter >> initializePresenters [
 	prompt := self newText.
 	prompt text: 'Explain the bug'.
 	promptMethodList := self newDropList.
-	promptMethodList items: { #executePrompt:. #executeOllamaPrompt: . #executeOpenAIPrompt: }.
+	promptMethodList items:
+		{ #executePrompt:. #executeOllamaPrompt:. #executeOpenAIPrompt: }.
 
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
 	promptButton action: [
+		self resetResultText.
 		self
 			perform: promptMethodList selectedItem
 			withArguments: { self buildPrompt } ].
 	explainButton := self newButton.
 	explainButton label: 'Explain!'.
 	explainButton action: [
+		self resetResultText.
 		self
 			perform: promptMethodList selectedItem
 			withArguments: { self buildExplainPrompt } ].
 	solveButton := self newButton.
 	solveButton label: 'Solve!'.
 	solveButton action: [
+		self resetResultText.
 		self
 			perform: promptMethodList selectedItem
 			withArguments: { self buildSolvePrompt } ].
 	result := self instantiate: MicrodownPresenter
+]
+
+{ #category : #'debugger extension' }
+LLMDebuggerPresenter >> resetResultText [
+
+	self updateResultText: ''
 ]
 
 { #category : #'accessing - model' }
@@ -226,6 +236,6 @@ LLMDebuggerPresenter >> updatePresenter [
 { #category : #'debugger extension' }
 LLMDebuggerPresenter >> updateResultText: aString [
 
-	rawResult ifNil: [ rawResult := aString ].
+	rawResult := aString.
 	result document: (Microdown parse: rawResult)
 ]
