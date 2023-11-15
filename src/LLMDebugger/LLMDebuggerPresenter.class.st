@@ -108,19 +108,22 @@ LLMDebuggerPresenter >> debuggerExtensionToolName [
 LLMDebuggerPresenter >> defaultLayout [
 	"An empty vertical box layout, for the moment"
 
-	^ SpBoxLayout newTopToBottom
+	^ SpPanedLayout newTopToBottom
+		  positionOfSlider: 20 percent;
 		  add: #prompt;
-		  add: #promptMethodList
-		  withConstraints: [ :constraints |
-			  constraints height: self class toolbarHeight ];
-		  add: (SpBoxLayout newLeftToRight
-				   add: #promptButton;
-				   add: #explainButton;
-				   add: #solveButton;
-				   yourself)
-		  withConstraints: [ :constraints |
-		  constraints height: self class toolbarHeight ];
-		  add: #result;
+		  add: (SpBoxLayout newTopToBottom
+				   add: #promptMethodList
+				   withConstraints: [ :constraints |
+					   constraints height: self class toolbarHeight ];
+				   add: (SpBoxLayout newLeftToRight
+						    add: #promptButton;
+						    add: #explainButton;
+						    add: #solveButton;
+						    yourself)
+				   withConstraints: [ :constraints |
+				   constraints height: self class toolbarHeight ];
+				   add: #result;
+				   yourself);
 		  yourself
 ]
 
@@ -133,7 +136,7 @@ LLMDebuggerPresenter >> executeOllamaPrompt: aPrompt [
 	ollama model: OCodeLlamaModel new.
 	ollama model tag: '7b'.
 	ollama temperature: 0.5.
-	ollama num_predict: 100.
+	ollama num_predict: 150.
 	ollama top_p: 0.5.
 	ollama stream: true.
 
