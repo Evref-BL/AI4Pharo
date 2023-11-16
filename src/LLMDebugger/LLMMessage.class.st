@@ -12,7 +12,7 @@ Class {
 LLMMessage class >> iSaid: aPrompt [
 
 	^ self new
-		  user: 'User';
+		  user: 'USER';
 		  text: aPrompt;
 		  yourself
 ]
@@ -21,7 +21,7 @@ LLMMessage class >> iSaid: aPrompt [
 LLMMessage class >> llmSaid: aPrompt [
 
 	^ self new
-		  user: 'Chatbot';
+		  user: 'CHATBOT';
 		  text: aPrompt;
 		  yourself
 ]
