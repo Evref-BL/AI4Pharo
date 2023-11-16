@@ -138,11 +138,11 @@ LLMDebuggerPresenter >> executeOllamaPrompt [
 	| answer ollama reader |
 	[
 	ollama := OllamaAPI new.
-	ollama model: OCodeLlamaModel new.
-	ollama model tag: '7b'.
-	ollama temperature: 0.5.
-	ollama num_predict: 150.
-	ollama top_p: 0.5.
+	ollama model: OPhindCodeLlamaModel new.
+	ollama model tag: '34b-v2'.
+	ollama temperature: 0.7.
+"	ollama num_predict: 200."
+	ollama top_p: 0.9.
 	ollama stream: true.
 	answer := ollama query: self debugger buildPrompt.
 	reader := NeoJSONReader on: (ZnCharacterReadStream on: answer).
