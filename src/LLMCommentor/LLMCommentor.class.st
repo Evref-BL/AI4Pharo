@@ -31,14 +31,28 @@ LLMCommentor >> buildPromptWithContext: aPharoMethod [.
 ]
 
 { #category : #'as yet unclassified' }
+LLMCommentor >> generateCommentForMethod: aPharoMethod [
+
+	|loc selector comment sourcecode prompt|
+	
+	loc := aPharoMethod sourceCode lines .
+	selector := loc first .
+	
+	sourcecode :=  '' join: (loc copyWithoutFirst: selector)  .
+
+	prompt := self buildPromptWithContext: aPharoMethod. 
+	 comment := ollama query: prompt.
+
+	aPharoMethod classBinding value compile: (String cr join: { selector . comment . sourcecode }).
+	
+	^ aPharoMethod reformat.
+	
+]
+
+{ #category : #'as yet unclassified' }
 LLMCommentor >> generateMethodsCommentForClass: myClass [
 
 | noComments |
-
-ollama := OllamaAPI new.
-ollama model: OPhindCodeLlamaModel new.
-ollama model tag: '34b-v2'.
-ollama stream: false. 
 
 "myClass := LLMPromptBuilder."
 
@@ -46,24 +60,18 @@ noComments := myClass methods select: [ :m |
 	m comments isEmpty.
 	 ].
 
-
-
-
 noComments do: [ :m |
-	|loc selector comment sourcecode prompt|
+	self generateCommentForMethod: m ].
+
+
+
+]
+
+{ #category : #initialization }
+LLMCommentor >> initialize [ 
 	
-	loc := m sourceCode lines .
-	selector := loc first .
-	
-	sourcecode :=  '' join: (loc copyWithoutFirst: selector)  .
-	
-
-	prompt := self buildPromptWithContext: m. 
-	 comment := ollama query: prompt.
-
-	m classBinding value compile: (String cr join: { selector . comment . sourcecode }).
-	 ].
-
-myClass methods do: #reformat.
-
+	ollama := OllamaAPI new.
+	ollama model: OPhindCodeLlamaModel new.
+	ollama model tag: '34b-v2'.
+	ollama stream: false. 
 ]
