@@ -74,6 +74,7 @@ LLMPromptBuilder >> initialize [
 	"Initialize the instance variables and call superclass's #initialize method."
 
 	super initialize.
+	history := LLMHistory new.
 	task := 'Now, you are asking to answer the latest question of [USER]. Generate a response:'
 ]
 
