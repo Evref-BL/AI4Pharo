@@ -8,8 +8,8 @@ Execute the following in a Pharo Playground
 
 ```st
 Metacello new
-  githubUser: 'Evref-BL' project: 'AI4Code' commitish: 'main' path: 'src';
-  baseline: 'AI4Code';
+  githubUser: 'Evref-BL' project: 'AI4Pharo' commitish: 'main' path: 'src';
+  baseline: 'AI4Pharo';
   load
 ```
 
