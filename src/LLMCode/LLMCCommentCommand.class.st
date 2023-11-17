@@ -30,8 +30,9 @@ LLMCCommentCommand >> defaultMenuItemName [
 
 { #category : #accessing }
 LLMCCommentCommand >> execute [
+	" Creates an instance of LLMCommentor and generates a comment for the current method."
 
 	| commentor |
 	commentor := LLMCommentor new.
-	commentor generateCommentForMethod: self method.
+	commentor generateCommentForMethod: self method
 ]
