@@ -31,6 +31,7 @@ LLMCCommentCommand >> defaultMenuItemName [
 { #category : #accessing }
 LLMCCommentCommand >> execute [
 
-	Transcript crShow: 'Comment ', method name.
-	
+	| commentor |
+	commentor := LLMCommentor new.
+	commentor generateCommentForMethod: self method.
 ]
