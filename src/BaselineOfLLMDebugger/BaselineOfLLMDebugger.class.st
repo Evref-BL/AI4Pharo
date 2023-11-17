@@ -38,7 +38,10 @@ BaselineOfLLMDebugger >> defineGroups: spec [
 { #category : #baselines }
 BaselineOfLLMDebugger >> definePackages: spec [
 
+	spec package: 'LLMDebugger' with: [
+		spec requires:
+			#( 'PharoHuggingFace' 'PharoOllama' 'PharoOpenAIAPI' ) ].
 	spec
-		package: 'LLMDebugger'
-		with: [ spec requires: #( 'PharoHuggingFace' 'PharoOllama' 'PharoOpenAIAPI' ) ]
+		package: 'LLMCommentor';
+		package: 'LLMCode'
 ]
