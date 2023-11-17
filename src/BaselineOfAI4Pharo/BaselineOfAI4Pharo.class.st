@@ -1,11 +1,11 @@
 Class {
-	#name : #BaselineOfLLMDebugger,
+	#name : #BaselineOfAI4Pharo,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfLLMDebugger
+	#category : #BaselineOfAI4Pharo
 }
 
 { #category : #baselines }
-BaselineOfLLMDebugger >> baseline: spec [
+BaselineOfAI4Pharo >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
@@ -15,7 +15,7 @@ BaselineOfLLMDebugger >> baseline: spec [
 ]
 
 { #category : #baselines }
-BaselineOfLLMDebugger >> defineDependencies: spec [
+BaselineOfAI4Pharo >> defineDependencies: spec [
 
 	spec
 		baseline: 'PharoHuggingFace'
@@ -32,11 +32,11 @@ BaselineOfLLMDebugger >> defineDependencies: spec [
 ]
 
 { #category : #baselines }
-BaselineOfLLMDebugger >> defineGroups: spec [
+BaselineOfAI4Pharo >> defineGroups: spec [
 ]
 
 { #category : #baselines }
-BaselineOfLLMDebugger >> definePackages: spec [
+BaselineOfAI4Pharo >> definePackages: spec [
 
 	spec package: 'LLMDebugger' with: [
 		spec requires:
