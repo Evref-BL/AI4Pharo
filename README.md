@@ -2,14 +2,14 @@
 
 This is an extension of the Pharo Debugger to query an LLM using the [Pharo HuggingFace API](https://github.com/Evref-BL/Pharo-HuggingFace) to do what ever we want.
 
-## Installation 
+## Installation
 
 Execute the following in a Pharo Playground
 
 ```st
 Metacello new
-  githubUser: 'Evref-BL' project: 'LLMDebugger' commitish: 'main' path: 'src';
-  baseline: 'LLMDebugger';
+  githubUser: 'Evref-BL' project: 'AI4Code' commitish: 'main' path: 'src';
+  baseline: 'AI4Code';
   load
 ```
 
