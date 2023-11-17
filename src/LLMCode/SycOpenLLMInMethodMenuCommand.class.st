@@ -1,6 +1,6 @@
 Class {
 	#name : #SycOpenLLMInMethodMenuCommand,
-	#superclass : #SycOpenMethodMenuCommand,
+	#superclass : #SycOpenContextMenuCommand,
 	#category : #LLMCode
 }
 
