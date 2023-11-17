@@ -1,5 +1,5 @@
 Class {
-	#name : #LLMCCommentCommand,
+	#name : #LLMCOtherCommand,
 	#superclass : #SycSourceCodeCommand,
 	#traits : 'TRefactoringCommandSupport',
 	#classTraits : 'TRefactoringCommandSupport classTrait',
@@ -7,13 +7,12 @@ Class {
 }
 
 { #category : #activation }
-LLMCCommentCommand class >> contextMenuOrder [
-
-	^ 10
+LLMCOtherCommand class >> contextMenuOrder [
+	^ 1000
 ]
 
 { #category : #activation }
-LLMCCommentCommand class >> sourceCodeMenuActivation [
+LLMCOtherCommand class >> sourceCodeMenuActivation [
 
 	<classAnnotation>
 	^ SycLLMMenuActivation
@@ -23,13 +22,13 @@ LLMCCommentCommand class >> sourceCodeMenuActivation [
 ]
 
 { #category : #accessing }
-LLMCCommentCommand >> defaultMenuItemName [
+LLMCOtherCommand >> defaultMenuItemName [
 
-	^ 'AI.Comment '
+	^ 'AI.Other'
 ]
 
 { #category : #accessing }
-LLMCCommentCommand >> execute [
+LLMCOtherCommand >> execute [
 
 	Transcript crShow: 'Comment ', method name.
 	
