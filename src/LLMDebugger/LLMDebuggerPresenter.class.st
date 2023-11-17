@@ -21,7 +21,12 @@ LLMDebuggerPresenter >> appendResultText: aString [
 
 	rawResult ifNil: [ rawResult := '' ].
 	rawResult := rawResult , aString.
-	result document: (Microdown parse: rawResult)
+	
+	
+(SystemVersion current major) <= 10 ifTrue: [ 
+		result text: (rawResult ).
+		 ] ifFalse: [ result document: (Microdown parse: rawResult) ].
+	
 ]
 
 { #category : #prompting }
@@ -213,7 +218,9 @@ LLMDebuggerPresenter >> initializePresenters [
 		self resetResultText.
 		self createSolvePrompt.
 		self perform: promptMethodList selectedItem ].
-	result := self instantiate: MicrodownPresenter
+	(SystemVersion current major) <= 10 ifTrue: [ result := self newText. 
+		 ] ifFalse: [ result := self instantiate: MicrodownPresenter   ]
+	
 ]
 
 { #category : #'debugger extension' }
@@ -240,5 +247,8 @@ LLMDebuggerPresenter >> updatePresenter [
 LLMDebuggerPresenter >> updateResultText: aString [
 
 	rawResult := aString.
-	result document: (Microdown parse: rawResult)
+	(SystemVersion current major) <= 10 ifTrue: [ 
+		result text: (rawResult ).
+		 ] ifFalse: [ result document: (Microdown parse: rawResult) ].
+	
 ]

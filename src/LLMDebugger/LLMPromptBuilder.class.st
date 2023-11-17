@@ -38,7 +38,7 @@ LLMPromptBuilder >> buildPrompt [
 			   str << String crlf ].
 		   str << '========='.
 		   str << String crlf.
-		   str << self task ]) recordInfo
+		   str << self task ])
 ]
 
 { #category : #accessing }
