@@ -26,13 +26,12 @@ LLMDebuggerPresenter >> appendResultText: aString [
 
 { #category : #prompting }
 LLMDebuggerPresenter >> createExplainPrompt [
+	"Creates a prompt for the user to provide a detailed explanation of an error they encountered, including the error name and relevant code snippets from the stack trace."
 
 	self debugger addUserSaid: (String streamContents: [ :stream |
 			 stream
 			 <<
-				 'You are a smalltalk debugging assistant. Give me all pertinent information that I need to debug the error reported below. I give the the error name, then the code of the methods in the stack trace separated by ---.
-	
-Error Name: '.
+			 'You are a smalltalk debugging assistant. Give me all pertinent information that I need to debug the error reported below. I give the the error name, then the code of the methods in the stack trace separated by ---.	Error Name: '.
 			 stream
 			 <<
 			 self debugger stDebugger debuggerActionModel
@@ -41,7 +40,6 @@ Error Name: '.
 			 stream << String lf.
 			 stream << '---'.
 			 stream << String lf.
-
 			 ((self debugger stDebugger debuggerActionModel session
 				   stackOfSize: 5) copyFrom: 2 to: 5) reverse
 				 do: [ :stack | stream << stack sourceCode ]
@@ -50,7 +48,6 @@ Error Name: '.
 					 stream << String lf.
 					 stream << '---'.
 					 stream << String lf ].
-
 			 stream << 'Finally propose the code that solves the bug' ])
 ]
 
