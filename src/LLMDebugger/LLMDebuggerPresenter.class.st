@@ -45,14 +45,18 @@ LLMDebuggerPresenter >> createExplainPrompt [
 			 stream << String lf.
 			 stream << '---'.
 			 stream << String lf.
-			 ((self debugger stDebugger debuggerActionModel session
-				   stackOfSize: 5) copyFrom: 2 to: 5) reverse
+			 self relativeStackElements
 				 do: [ :stack | stream << stack sourceCode ]
 				 separatedBy: [
 					 stream << String lf.
 					 stream << String lf.
 					 stream << '---'.
 					 stream << String lf ].
+			 stream << String lf.
+			 stream << String lf.
+			 stream << '---'.
+			 stream << String lf.
+			 stream << String lf.
 			 stream << 'Finally propose the code that solves the bug' ])
 ]
 
@@ -82,9 +86,7 @@ I have this error: '.
 			 stream << String lf.
 			 stream << '---'.
 			 stream << String lf.
-
-			 ((self debugger stDebugger debuggerActionModel session
-				   stackOfSize: 5) copyFrom: 2 to: 5) reverse
+			 self relativeStackElements
 				 do: [ :stack | stream << stack sourceCode ]
 				 separatedBy: [
 					 stream << String lf.
@@ -221,6 +223,18 @@ LLMDebuggerPresenter >> initializePresenters [
 	(SystemVersion current major) <= 10 ifTrue: [ result := self newText. 
 		 ] ifFalse: [ result := self instantiate: MicrodownPresenter   ]
 	
+]
+
+{ #category : #prompting }
+LLMDebuggerPresenter >> relativeStackElements [
+
+	| stack doitIndex |
+	stack := self debugger stDebugger debuggerActionModel session
+		         stackOfSize: 5.
+	doitIndex := stack
+		             detectIndex: [ :el | el method isDoIt ]
+		             ifNone: [ ^ stack reverse ].
+	^ (stack copyFrom: 2 to: doitIndex) reverse
 ]
 
 { #category : #'debugger extension' }
