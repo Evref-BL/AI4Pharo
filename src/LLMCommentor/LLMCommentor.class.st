@@ -9,16 +9,23 @@ Class {
 
 { #category : #'as yet unclassified' }
 LLMCommentor >> buildMethodContext: aPharoMethod [
-	|loc selector context sourcecode|
-	loc := aPharoMethod sourceCode lines .
-	selector := loc first .
-	sourcecode :=  '' join: (loc copyWithoutFirst: selector).
-	
-	context := 'Method name: #', String cr, 
-	selector, String cr, 
-	String cr, 'Method source code: ',String cr, sourcecode , String cr.
-	
-^ context 
+
+	| loc selector sourcecode |
+	^ String streamContents: [ :stream |
+		  loc := aPharoMethod sourceCode lines.
+		  selector := loc first.
+		  sourcecode := '' join: (loc copyWithoutFirst: selector).
+
+		  stream
+			  << 'Method name: #';
+			  << String cr;
+			  << selector;
+			  << String cr;
+			  << String cr;
+			  << 'Method source code: ';
+			  << String cr;
+			  << sourcecode;
+			  << String cr ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -55,18 +62,10 @@ LLMCommentor >> generateCommentForMethod: aPharoMethod [
 { #category : #'as yet unclassified' }
 LLMCommentor >> generateMethodsCommentForClass: myClass [
 
-| noComments |
+	| noComments |
+	noComments := myClass methods select: [ :m | m comments isEmpty ].
 
-
-noComments := myClass methods select: [ :m | 
-	m comments isEmpty.
-	 ].
-
-noComments do: [ :m |
-	self generateCommentForMethod: m ].
-
-
-
+	noComments do: [ :m | self generateCommentForMethod: m ]
 ]
 
 { #category : #initialization }
