@@ -33,7 +33,7 @@ LLMCommentor >> buildPromptWithContext: aPharoMethod [.
 { #category : #'as yet unclassified' }
 LLMCommentor >> generateCommentForMethod: aPharoMethod [
 
-	| loc selector comment sourcecode prompt |
+	| loc selector comment sourcecode prompt newMethod |
 	loc := aPharoMethod sourceCode lines.
 	selector := loc first.
 
@@ -41,13 +41,15 @@ LLMCommentor >> generateCommentForMethod: aPharoMethod [
 
 	prompt := self buildPromptWithContext: aPharoMethod.
 	comment := ollama query: prompt.
-	self halt.
-	aPharoMethod classBinding value compile: (String cr join: {
+	
+	self flag: 'TODO : Check by parsing that comment is a true pharo comment'.
+	
+	newMethod := aPharoMethod methodClass compile: (String cr join: {
 				 selector.
 				 comment.
 				 sourcecode }).
 
-	^ aPharoMethod reformat
+	^ (aPharoMethod methodClass >> newMethod) reformat
 ]
 
 { #category : #'as yet unclassified' }
@@ -55,7 +57,6 @@ LLMCommentor >> generateMethodsCommentForClass: myClass [
 
 | noComments |
 
-"myClass := LLMPromptBuilder."
 
 noComments := myClass methods select: [ :m | 
 	m comments isEmpty.
@@ -70,6 +71,8 @@ noComments do: [ :m |
 
 { #category : #initialization }
 LLMCommentor >> initialize [
+	"Initialize the instance by setting up a new OllamaAPI object, creating a new OPhindCodeLlamaModel and setting its tag to '34b-v2', then disabling streaming."
+
 
 	super initialize.
 	ollama := OllamaAPI new.
