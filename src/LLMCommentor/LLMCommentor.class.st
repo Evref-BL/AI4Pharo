@@ -29,34 +29,24 @@ LLMCommentor >> buildMethodContext: aPharoMethod [
 ]
 
 { #category : #'as yet unclassified' }
-LLMCommentor >> buildPromptWithContext: aPharoMethod [. 
+LLMCommentor >> buildPromptWithContext: aPharoMethod [
+
 	^ LLMPromptBuilder new
-		  role: 'You are a smalltalk developper. You write one line comments for the methods using the context.';
+		  role:
+			  'You are a smalltalk developper. You write a one line comment for the methods using the context.';
 		  context: (self buildMethodContext: aPharoMethod);
-		  task: 'Your comment must summarize the method behavior. Only answer as smalltalk comment';
+		  task:
+			  'Your comment must summarize the method behavior. Only answer as smalltalk comment';
 		  buildPrompt
 ]
 
 { #category : #'as yet unclassified' }
 LLMCommentor >> generateCommentForMethod: aPharoMethod [
 
-	| loc selector comment sourcecode prompt newMethod |
-	loc := aPharoMethod sourceCode lines.
-	selector := loc first.
-
-	sourcecode := '' join: (loc copyWithoutFirst: selector).
-
+	| comment prompt |
 	prompt := self buildPromptWithContext: aPharoMethod.
 	comment := ollama query: prompt.
-	
-	self flag: 'TODO : Check by parsing that comment is a true pharo comment'.
-	
-	newMethod := aPharoMethod methodClass compile: (String cr join: {
-				 selector.
-				 comment.
-				 sourcecode }).
-
-	^ (aPharoMethod methodClass >> newMethod) reformat
+	^ comment
 ]
 
 { #category : #'as yet unclassified' }
@@ -70,12 +60,9 @@ LLMCommentor >> generateMethodsCommentForClass: myClass [
 
 { #category : #initialization }
 LLMCommentor >> initialize [
-	"Initialize the instance by setting up a new OllamaAPI object, creating a new OPhindCodeLlamaModel and setting its tag to '34b-v2', then disabling streaming."
-
+	"Initialize the instance by setting up a new OllamaAPI object and disabling streaming."
 
 	super initialize.
 	ollama := OllamaAPI new.
-	ollama model: OPhindCodeLlamaModel new.
-	ollama model tag: '34b-v2'.
 	ollama stream: false
 ]

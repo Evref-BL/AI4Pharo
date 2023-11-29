@@ -22,17 +22,21 @@ LLMCCommentCommand class >> sourceCodeMenuActivation [
 		  for: ClySourceCodeContext
 ]
 
+{ #category : #execution }
+LLMCCommentCommand >> asRefactorings [
+
+	| commentor newComment |
+	commentor := LLMCommentor new.
+	newComment := commentor generateCommentForMethod: self method.
+
+	^ RBAddMethodCommentTransformation
+		  comment: newComment
+		  inMethod: method selector
+		  inClass: method origin
+]
+
 { #category : #accessing }
 LLMCCommentCommand >> defaultMenuItemName [
 
 	^ 'AI.Comment '
-]
-
-{ #category : #execution }
-LLMCCommentCommand >> execute [
-	" Creates an instance of LLMCommentor and generates a comment for the current method."
-
-	| commentor |
-	commentor := LLMCommentor new.
-	commentor generateCommentForMethod: self method
 ]
