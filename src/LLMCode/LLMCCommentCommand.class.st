@@ -28,7 +28,7 @@ LLMCCommentCommand >> defaultMenuItemName [
 	^ 'AI.Comment '
 ]
 
-{ #category : #accessing }
+{ #category : #execution }
 LLMCCommentCommand >> execute [
 
 	| commentor |
