@@ -14,31 +14,34 @@ Class {
 LLMPromptBuilder >> buildPrompt [
 	"Construct and return the prompt, including role, context, history, and current task."
 
-	^ (String streamContents: [ :str |
-		   str << self role.
-		   str << String crlf.
-		   self context ifNotNil: [
-			   str << '========='.
-			   str << String crlf.
-			   str << 'Context:'.
-			   str << String crlf.
-			   str << self context.
-			   str << String crlf ].
-		   str << '========='.
-		   str << String crlf.
-		   str << 'History:'.
-		   str << String crlf.
-		   self history messageStack do: [ :message |
-			   str
-				   << '[';
-				   << message user;
-				   << ']';
-				   << ':'.
-			   str << message text.
-			   str << String crlf ].
-		   str << '========='.
-		   str << String crlf.
-		   str << self task ])
+	^ String streamContents: [ :str |
+		  str << self role.
+		  str << String crlf.
+		  self context ifNotNil: [
+			  str << '========='.
+			  str << String crlf.
+			  str << 'Context:'.
+			  str << String crlf.
+			  str << self context.
+			  str << String crlf ].
+		  str << '========='.
+		  str << String crlf.
+
+		  self history messageStack ifNotEmpty: [ :messageStack |
+			  str << 'History:'.
+			  str << String crlf.
+			  messageStack do: [ :message |
+				  str
+					  << '[';
+					  << message user;
+					  << ']';
+					  << ':'.
+				  str << message text.
+				  str << String crlf ].
+			  str << '========='.
+			  str << String crlf ].
+
+		  str << self task ]
 ]
 
 { #category : #accessing }

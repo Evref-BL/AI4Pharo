@@ -21,12 +21,11 @@ LLMDebuggerPresenter >> appendResultText: aString [
 
 	rawResult ifNil: [ rawResult := '' ].
 	rawResult := rawResult , aString.
-	
-	
-(SystemVersion current major) <= 10 ifTrue: [ 
-		result text: (rawResult ).
-		 ] ifFalse: [ result document: (Microdown parse: rawResult) ].
-	
+
+
+	SystemVersion current major <= 10
+		ifTrue: [ result text: rawResult ]
+		ifFalse: [ result document: (Microdown parse: rawResult) ]
 ]
 
 { #category : #prompting }

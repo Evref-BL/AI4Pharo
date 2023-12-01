@@ -42,6 +42,8 @@ BaselineOfAI4Pharo >> definePackages: spec [
 		spec requires:
 			#( 'PharoHuggingFace' 'PharoOllama' 'PharoOpenAIAPI' ) ].
 	spec
-		package: 'LLMCommentor';
-		package: 'LLMCode'
+		package: 'AI4Iceberg'
+		with: [ spec requires: #( 'PharoOllama' ) ].
+	spec
+		package: 'LLMCommentor'
 ]
