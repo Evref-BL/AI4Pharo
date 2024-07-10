@@ -24,7 +24,7 @@ LLMIceTipCommentPanel >> buildPrompt [
 				           stream << '---' ] ] ].
 	^ LLMPromptBuilder new
 		  role:
-			  'You are a commit message writter. Based on the context code diff. Write a commit message';
+			  'You are a good developer. Based on the context code diff. Write a commit message. No additionnal comment. Only commit message.';
 		  context: context;
 		  task: 'Write a less than 200 characters commit message for the context';
 		  buildPrompt
