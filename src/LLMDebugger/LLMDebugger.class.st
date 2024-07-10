@@ -1,6 +1,6 @@
 Class {
-	#name : #LLMDebugger,
-	#superclass : #Object,
+	#name : 'LLMDebugger',
+	#superclass : 'Object',
 	#instVars : [
 		'stDebugger',
 		'history'
@@ -8,22 +8,23 @@ Class {
 	#classInstVars : [
 		'defaultPromptModel'
 	],
-	#category : #LLMDebugger
+	#category : 'LLMDebugger',
+	#package : 'LLMDebugger'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger class >> defaultPromptModel [
 
 	^ defaultPromptModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger class >> defaultPromptModel: anObject [
 
 	defaultPromptModel := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LLMDebugger class >> llmDebuggerSettings: aBuilder [
 
 	<systemsettings>
@@ -41,21 +42,21 @@ LLMDebugger class >> llmDebuggerSettings: aBuilder [
 						('Ollama' -> #executeOllamaPrompt) } ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 LLMDebugger >> addLLMSaid: aLLMPrompt [
 	"Adds an LLM message with prompt aLLMPrompt to the conversation history."
 
 	self history addMessage: (LLMMessage llmSaid: aLLMPrompt)
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 LLMDebugger >> addUserSaid: aLLMPrompt [
 	"Adds a new message to the history with the content being what user said represented by provided LLMPrompt."
 
 	self history addMessage: (LLMMessage iSaid: aLLMPrompt)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> buildPrompt [
 	"Build a prompt for the user in a chatting interface, indicating the current context of execution (error or last methods), including the call stack if possible."
 
@@ -87,13 +88,13 @@ LLMDebugger >> buildPrompt [
 				           stream << '---'.
 				           stream << String lf ] ].
 	^ LLMPromptBuilder new
-		  role: 'You are a debugging smalltalk assistant chatbot';
+		  role: 'You are a debugging smalltalk assistant chatbot. Answer with short answer.';
 		  history: self history;
 		  context: context;
 		  buildPrompt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> buildPrompt: context [
 	"Construct and return a LLMPromptBuilder object with specified role, context, and history for prompt building."
 
@@ -104,21 +105,21 @@ LLMDebugger >> buildPrompt: context [
 		  buildPrompt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> history [
 	"Returns the history object or value"
 
 	^ history
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> history: anObject [
 	"Set the value of history to the provided object."
 
 	history := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> initialize [
 	"Initialize method: Sets the initial state of an instance of this class, setting the history attribute to a newly created instance of LLMHistory."
 
@@ -126,14 +127,14 @@ LLMDebugger >> initialize [
 	history := LLMHistory new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> stDebugger [
 	"Returns an instance of the Smalltalk debugger."
 
 	^ stDebugger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMDebugger >> stDebugger: anObject [
 	"Opens a debugger with the provided object"
 

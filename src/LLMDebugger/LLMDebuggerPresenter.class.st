@@ -1,6 +1,6 @@
 Class {
-	#name : #LLMDebuggerPresenter,
-	#superclass : #SpPresenter,
+	#name : 'LLMDebuggerPresenter',
+	#superclass : 'SpPresenter',
 	#traits : 'TStDebuggerExtension',
 	#classTraits : 'TStDebuggerExtension classTrait',
 	#instVars : [
@@ -13,10 +13,11 @@ Class {
 		'solveButton',
 		'promptMethodList'
 	],
-	#category : #LLMDebugger
+	#category : 'LLMDebugger',
+	#package : 'LLMDebugger'
 }
 
-{ #category : #'debugger extension' }
+{ #category : 'debugger extension' }
 LLMDebuggerPresenter >> appendResultText: aString [
 
 	rawResult ifNil: [ rawResult := '' ].
@@ -28,7 +29,7 @@ LLMDebuggerPresenter >> appendResultText: aString [
 		ifFalse: [ result document: (Microdown parse: rawResult) ]
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> createExplainPrompt [
 	"Creates a prompt for the user to provide a detailed explanation of an error they encountered, including the error name and relevant code snippets from the stack trace."
 
@@ -59,7 +60,7 @@ LLMDebuggerPresenter >> createExplainPrompt [
 			 stream << 'Finally propose the code that solves the bug' ])
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> createPrompt [
 	"
 	1. Je cronstruit le nouveau text que je veux faire
@@ -69,7 +70,7 @@ LLMDebuggerPresenter >> createPrompt [
 	self debugger addUserSaid: prompt text
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> createSolvePrompt [
 
 	self debugger addUserSaid: (String streamContents: [ :stream |
@@ -100,19 +101,19 @@ I have this error: '.
 			 'Do not provide any comment. Generate only the code to solve this issue!' ])
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LLMDebuggerPresenter >> currentStDebuggerContext [
    "A 'shortcut' to get the same currentContext of the StDebugger"
    ^ debugger stDebugger currentContext
 ]
 
-{ #category : #'debugger extension' }
+{ #category : 'debugger extension' }
 LLMDebuggerPresenter >> debuggerExtensionToolName [
 	
 	^ 'LLM Debugger'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 LLMDebuggerPresenter >> defaultLayout [
 	"An empty vertical box layout, for the moment"
 
@@ -135,7 +136,7 @@ LLMDebuggerPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> executeOllamaPrompt [
 
 	| answer ollama reader |
@@ -155,7 +156,7 @@ LLMDebuggerPresenter >> executeOllamaPrompt [
 		Processor lowIOPriority
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> executeOpenAIPrompt [
 
 	| answer api object openAIResult |
@@ -174,7 +175,7 @@ LLMDebuggerPresenter >> executeOpenAIPrompt [
 	self debugger addLLMSaid: rawResult
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> executePrompt [
 
 	| api answer |
@@ -187,7 +188,7 @@ LLMDebuggerPresenter >> executePrompt [
 	self debugger addLLMSaid: rawResult
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LLMDebuggerPresenter >> initializePresenters [
 	"Called automatically by the Spec framework. This method describes how the widgets are initialized"
 
@@ -222,7 +223,7 @@ LLMDebuggerPresenter >> initializePresenters [
 	
 ]
 
-{ #category : #prompting }
+{ #category : 'prompting' }
 LLMDebuggerPresenter >> relativeStackElements [
 
 	| stack doitIndex |
@@ -234,27 +235,27 @@ LLMDebuggerPresenter >> relativeStackElements [
 	^ (stack copyFrom: 2 to: doitIndex) reverse
 ]
 
-{ #category : #'debugger extension' }
+{ #category : 'debugger extension' }
 LLMDebuggerPresenter >> resetResultText [
 
 	self updateResultText: ''
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 LLMDebuggerPresenter >> setModelBeforeInitialization: aDebugger [
 
 	debugger := LLMDebugger new.
 	debugger stDebugger: aDebugger
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LLMDebuggerPresenter >> updatePresenter [
    "Called automatically when the debugger updates its state after stepping"
    "Your widgets should be updated here."
    super updatePresenter
 ]
 
-{ #category : #'debugger extension' }
+{ #category : 'debugger extension' }
 LLMDebuggerPresenter >> updateResultText: aString [
 
 	rawResult := aString.

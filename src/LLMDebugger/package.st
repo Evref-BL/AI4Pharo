@@ -1,1 +1,1 @@
-Package { #name : #LLMDebugger }
+Package { #name : 'LLMDebugger' }

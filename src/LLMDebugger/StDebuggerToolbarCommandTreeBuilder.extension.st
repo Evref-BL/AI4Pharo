@@ -1,6 +1,6 @@
-Extension { #name : #StDebuggerToolbarCommandTreeBuilder }
+Extension { #name : 'StDebuggerToolbarCommandTreeBuilder' }
 
-{ #category : #'*LLMDebugger' }
+{ #category : '*LLMDebugger' }
 StDebuggerToolbarCommandTreeBuilder >> contextControlCommandClasses [
 	^ {StDefineMissingEntityCommand . StLLMDefineMethodCommand}
 ]

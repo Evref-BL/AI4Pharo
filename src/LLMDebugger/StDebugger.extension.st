@@ -1,6 +1,6 @@
-Extension { #name : #StDebugger }
+Extension { #name : 'StDebugger' }
 
-{ #category : #'*LLMDebugger' }
+{ #category : '*LLMDebugger' }
 StDebugger >> createMissingMethodAndGenerate [
 
 	| msg chosenClass |
@@ -18,7 +18,7 @@ StDebugger >> createMissingMethodAndGenerate [
 	code takeKeyboardFocus 
 ]
 
-{ #category : #'*LLMDebugger' }
+{ #category : '*LLMDebugger' }
 StDebugger >> generateMethodFor: msg in: class [
 
 	| api object aPrompt openAIResult |
@@ -59,7 +59,7 @@ StDebugger >> generateMethodFor: msg in: class [
 	^ openAIResult choices anyOne message at: #content
 ]
 
-{ #category : #'*LLMDebugger' }
+{ #category : '*LLMDebugger' }
 StDebugger >> ollamaGenerateMethodFor: msg in: class [
 
 	| api aPrompt openAIResult |
@@ -102,7 +102,7 @@ StDebugger >> ollamaGenerateMethodFor: msg in: class [
 	^ openAIResult 
 ]
 
-{ #category : #'*LLMDebugger' }
+{ #category : '*LLMDebugger' }
 StDebugger >> openIAgenerateMethodFor: msg in: class [
 
 	| api object aPrompt openAIResult |
