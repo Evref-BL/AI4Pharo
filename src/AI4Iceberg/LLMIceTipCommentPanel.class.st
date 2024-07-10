@@ -1,16 +1,17 @@
 Class {
-	#name : #LLMIceTipCommentPanel,
-	#superclass : #IceTipCommentPanel,
-	#category : #AI4Iceberg
+	#name : 'LLMIceTipCommentPanel',
+	#superclass : 'IceTipCommentPanel',
+	#category : 'AI4Iceberg',
+	#package : 'AI4Iceberg'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMIceTipCommentPanel >> appendResultText: message [
 
 	commentText text: commentText text , message
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMIceTipCommentPanel >> buildPrompt [
 
 	| context |
@@ -30,7 +31,7 @@ LLMIceTipCommentPanel >> buildPrompt [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMIceTipCommentPanel >> generateCommitMessage [
 	"Generates a commit message using the Ollama API and displays it in the commentText."
 
@@ -51,7 +52,7 @@ LLMIceTipCommentPanel >> generateCommitMessage [
 		Processor lowIOPriority
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LLMIceTipCommentPanel >> initializePresenters [
 
 	super initializePresenters.

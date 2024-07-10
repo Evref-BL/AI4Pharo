@@ -1,1 +1,1 @@
-Package { #name : #AI4Iceberg }
+Package { #name : 'AI4Iceberg' }

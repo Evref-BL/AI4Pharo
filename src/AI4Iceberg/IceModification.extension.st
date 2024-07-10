@@ -1,6 +1,6 @@
-Extension { #name : #IceModification }
+Extension { #name : 'IceModification' }
 
-{ #category : #'*AI4Iceberg' }
+{ #category : '*AI4Iceberg' }
 IceModification >> printOnLLMQuery: aWriteStream [
 
 	aWriteStream
