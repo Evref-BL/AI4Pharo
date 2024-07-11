@@ -66,8 +66,6 @@ StDebugger >> ollamaGenerateMethodFor: msg in: class [
 	
 
 	api := OllamaAPI new.
-	api model: OPhindCodeLlamaModel new.
-	api model tag: '34b-v2'.
 	api stream: false.
 
 	aPrompt := String streamContents: [ :stream |
@@ -93,7 +91,7 @@ StDebugger >> ollamaGenerateMethodFor: msg in: class [
 		           stream << ' arguments.'.
 		           stream << String crlf.
 		           stream << 'Generate the code' ].
-	aPrompt recordInfo.
+	"aPrompt recordInfo."
 	
 
 	openAIResult := api query: aPrompt.
