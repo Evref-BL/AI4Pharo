@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfAI4Pharo,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfAI4Pharo
+	#name : 'BaselineOfAI4Pharo',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfAI4Pharo',
+	#package : 'BaselineOfAI4Pharo'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfAI4Pharo >> baseline: spec [
 
 	<baseline>
@@ -14,7 +15,7 @@ BaselineOfAI4Pharo >> baseline: spec [
 		self defineGroups: spec ]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfAI4Pharo >> defineDependencies: spec [
 
 	spec
@@ -31,11 +32,11 @@ BaselineOfAI4Pharo >> defineDependencies: spec [
 		spec repository: 'github://Evref-BL/Pharo-OpenAI:main/src' ]
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfAI4Pharo >> defineGroups: spec [
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfAI4Pharo >> definePackages: spec [
 
 	spec package: 'LLMDebugger' with: [
@@ -44,6 +45,6 @@ BaselineOfAI4Pharo >> definePackages: spec [
 	spec
 		package: 'AI4Iceberg'
 		with: [ spec requires: #( 'PharoOllama' ) ].
-	spec
-		package: 'LLMCommentor'
+	spec package: 'LLMCommentor'.
+	spec package: 'LLMCode'
 ]
