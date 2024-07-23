@@ -19,16 +19,21 @@ LLMIceTipCommentPanel >> buildPrompt [
 		           self repositoryModel workingCopyDiff treeRoots collect: [
 			           :root |
 			           root allChildrenDo: [ :child |
+				           stream
+					           << 'On: ';
+					           << child key;
+					           << String lf.
 				           child value printOnLLMQuery: stream.
 				           stream << String lf.
 				           stream << '---' ] ] ].
+
 	^ LLMPromptBuilder new
 		  role:
 			  'You are a good developer. Based on the context code diff. Write a commit message. No additionnal comment. Only commit message.';
 		  context: context;
-		  task: 'Write a less than 200 characters commit message for the context';
+		  task:
+			  'Write a less than 200 characters commit message for the context';
 		  buildPrompt
-
 ]
 
 { #category : 'accessing' }

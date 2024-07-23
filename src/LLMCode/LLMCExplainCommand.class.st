@@ -38,7 +38,7 @@ LLMCExplainCommand >> defaultMenuItemName [
 	^ 'AI.Explain'
 ]
 
-{ #category : 'accessing' }
+{ #category : 'execution' }
 LLMCExplainCommand >> execute [
 
 	| prompt api answer reader |
