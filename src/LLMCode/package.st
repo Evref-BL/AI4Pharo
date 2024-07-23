@@ -1,1 +1,1 @@
-Package { #name : #LLMCode }
+Package { #name : 'LLMCode' }

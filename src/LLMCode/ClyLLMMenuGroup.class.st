@@ -1,15 +1,16 @@
 Class {
-	#name : #ClyLLMMenuGroup,
-	#superclass : #CmdMenuGroup,
-	#category : #LLMCode
+	#name : 'ClyLLMMenuGroup',
+	#superclass : 'CmdMenuGroup',
+	#category : 'LLMCode',
+	#package : 'LLMCode'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 ClyLLMMenuGroup >> isInlined [
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ClyLLMMenuGroup >> order [
 	^1.5
 ]

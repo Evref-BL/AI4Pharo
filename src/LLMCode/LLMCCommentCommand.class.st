@@ -1,18 +1,19 @@
 Class {
-	#name : #LLMCCommentCommand,
-	#superclass : #SycSourceCodeCommand,
+	#name : 'LLMCCommentCommand',
+	#superclass : 'SycSourceCodeCommand',
 	#traits : 'TRefactoringCommandSupport',
 	#classTraits : 'TRefactoringCommandSupport classTrait',
-	#category : #LLMCode
+	#category : 'LLMCode',
+	#package : 'LLMCode'
 }
 
-{ #category : #activation }
+{ #category : 'activation' }
 LLMCCommentCommand class >> contextMenuOrder [
 
 	^ 10
 ]
 
-{ #category : #activation }
+{ #category : 'activation' }
 LLMCCommentCommand class >> sourceCodeMenuActivation [
 
 	<classAnnotation>
@@ -22,7 +23,7 @@ LLMCCommentCommand class >> sourceCodeMenuActivation [
 		  for: ClySourceCodeContext
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 LLMCCommentCommand >> asRefactorings [
 
 	| commentor newComment |
@@ -35,7 +36,7 @@ LLMCCommentCommand >> asRefactorings [
 		  inClass: method origin
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LLMCCommentCommand >> defaultMenuItemName [
 
 	^ 'AI.Comment '
