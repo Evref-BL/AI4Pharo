@@ -19,17 +19,9 @@ BaselineOfAI4Pharo >> baseline: spec [
 BaselineOfAI4Pharo >> defineDependencies: spec [
 
 	spec
-		baseline: 'PharoHuggingFace'
+		baseline: 'LLMAPI'
 		with: [
-		spec repository: 'github://Evref-BL/Pharo-HuggingFace:main/src' ].
-	spec
-		baseline: 'PharoOllama'
-		with: [
-		spec repository: 'github://Evref-BL/Pharo-OllamaAPI:main/src' ].
-	spec
-		baseline: 'PharoOpenAIAPI'
-		with: [
-		spec repository: 'github://Evref-BL/Pharo-OpenAI:main/src' ]
+		spec repository: 'github://Evref-BL/Pharo-LLMAPI:main/src' ]
 ]
 
 { #category : 'baselines' }
@@ -41,10 +33,10 @@ BaselineOfAI4Pharo >> definePackages: spec [
 
 	spec package: 'LLMDebugger' with: [
 		spec requires:
-			#( 'PharoHuggingFace' 'PharoOllama' 'PharoOpenAIAPI' ) ].
+			#( 'LLMAPI' ) ].
 	spec
 		package: 'AI4Iceberg'
-		with: [ spec requires: #( 'PharoOllama' ) ].
+		with: [ spec requires: #( 'LLMAPI' ) ].
 	spec package: 'LLMCommentor'.
 	spec package: 'LLMCode'
 ]

@@ -30,10 +30,10 @@ LLMCCommentCommand >> asRefactorings [
 	commentor := LLMCommentor new.
 	newComment := commentor generateCommentForMethod: self method.
 
-	^ RBAddMethodCommentTransformation
-		  comment: newComment
-		  inMethod: method selector
-		  inClass: method origin
+	^ { (RBAddMethodCommentTransformation
+		   comment: newComment
+		   inMethod: method selector
+		   inClass: method origin) }
 ]
 
 { #category : 'accessing' }

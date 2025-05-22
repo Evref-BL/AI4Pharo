@@ -1,1 +1,1 @@
-Package { #name : #LLMCommentor }
+Package { #name : 'LLMCommentor' }

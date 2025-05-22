@@ -1,13 +1,14 @@
 Class {
-	#name : #LLMCommentor,
-	#superclass : #Object,
+	#name : 'LLMCommentor',
+	#superclass : 'Object',
 	#instVars : [
-		'ollama'
+		'api'
 	],
-	#category : #LLMCommentor
+	#category : 'LLMCommentor',
+	#package : 'LLMCommentor'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LLMCommentor >> buildMethodContext: aPharoMethod [
 
 	| loc selector sourcecode |
@@ -28,7 +29,7 @@ LLMCommentor >> buildMethodContext: aPharoMethod [
 			  << String cr ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LLMCommentor >> buildPromptWithContext: aPharoMethod [
 
 	^ LLMPromptBuilder new
@@ -40,16 +41,26 @@ LLMCommentor >> buildPromptWithContext: aPharoMethod [
 		  buildPrompt
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LLMCommentor >> generateCommentForMethod: aPharoMethod [
 
 	| comment prompt |
 	prompt := self buildPromptWithContext: aPharoMethod.
-	comment := ollama query: prompt.
+	api payload
+		temperature: 0.5;
+		model: 'devstral';
+		top_p: 1;
+		max_tokens: 250;
+		messages: {
+				(LLMAPIChatObjectMessage
+					 role: 'system'
+					 content: 'You are a usefull assistant').
+				(LLMAPIChatObjectMessage role: 'user' content: prompt) }.
+	comment := api performRequest.
 	^ comment
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 LLMCommentor >> generateMethodsCommentForClass: myClass [
 
 	| noComments |
@@ -58,11 +69,10 @@ LLMCommentor >> generateMethodsCommentForClass: myClass [
 	noComments do: [ :m | self generateCommentForMethod: m ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LLMCommentor >> initialize [
 	"Initialize the instance by setting up a new OllamaAPI object and disabling streaming."
 
 	super initialize.
-	ollama := OllamaAPI new.
-	ollama stream: false
+	api := LLMAPI chat
 ]

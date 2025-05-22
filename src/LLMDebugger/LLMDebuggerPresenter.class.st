@@ -136,58 +136,6 @@ LLMDebuggerPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'prompting' }
-LLMDebuggerPresenter >> executeOllamaPrompt [
-
-	| answer ollama reader |
-	[
-	ollama := OllamaAPI new.
-	ollama temperature: 0.7.
-"	ollama num_predict: 200."
-	ollama top_p: 0.9.
-	ollama stream: true.
-	answer := ollama query: self debugger buildPrompt.
-	reader := NeoJSONReader on: (ZnCharacterReadStream on: answer).
-	[ reader atEnd ] whileFalse: [
-		| val |
-		val := reader next.
-		self appendResultText: (val at: #response).
-		(val at: #done) ifTrue: [ answer close. self debugger addLLMSaid: rawResult ] ] ] forkAt:
-		Processor lowIOPriority
-]
-
-{ #category : 'prompting' }
-LLMDebuggerPresenter >> executeOpenAIPrompt [
-
-	| answer api object openAIResult |
-	api := OAApi new.
-	object := OARequestObject new.
-
-	object addMessage: (OARequestMessage new
-			 content: (self debugger buildPrompt);
-			 yourself).
-
-	api content: object.
-	openAIResult := api perform.
-
-	answer := openAIResult choices anyOne message at: #content.
-	self updateResultText: answer.
-	self debugger addLLMSaid: rawResult
-]
-
-{ #category : 'prompting' }
-LLMDebuggerPresenter >> executePrompt [
-
-	| api answer |
-	api := HFAPI new.
-	api model: HFMistralInstructModel new.
-	api return_full_text: false.
-	api max_new_tokens: 250.
-	answer := api query: self debugger buildPrompt.
-	self updateResultText: answer.
-	self debugger addLLMSaid: rawResult
-]
-
 { #category : 'initialization' }
 LLMDebuggerPresenter >> initializePresenters [
 	"Called automatically by the Spec framework. This method describes how the widgets are initialized"
@@ -196,10 +144,6 @@ LLMDebuggerPresenter >> initializePresenters [
 
 	prompt := self newText.
 	prompt text: 'Explain the bug'.
-	promptMethodList := self newDropList.
-	promptMethodList items:
-		{ #executePrompt. #executeOllamaPrompt. #executeOpenAIPrompt }.
-	promptMethodList selectItem: self debugger class defaultPromptModel.
 	promptButton := self newButton.
 	promptButton label: 'Prompt!'.
 	promptButton action: [

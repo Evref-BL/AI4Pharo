@@ -7,10 +7,14 @@ Class {
 
 { #category : 'testing' }
 ClyLLMMenuGroup >> isInlined [
-	^true
+	"Always returns true, indicating that this method is inlined."
+
+	^ true
 ]
 
 { #category : 'accessing' }
 ClyLLMMenuGroup >> order [
-	^1.5
+	"Return 1.5 as a fixed value."
+
+	^ 1.5
 ]

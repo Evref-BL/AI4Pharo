@@ -41,27 +41,31 @@ LLMCExplainCommand >> defaultMenuItemName [
 { #category : 'execution' }
 LLMCExplainCommand >> execute [
 
-	| prompt api answer reader |
+	| prompt api answer |
 	prompt := String streamContents: [ :str |
-		          str << 'Explain this Pharo piece of code:
+			          str << 'Explain this Pharo piece of code:
 ```st
 '.
-		          str << codeSelected asString.
-		          str << '
+			          str << codeSelected asString.
+			          str << '
 ```' ].
-	api := OllamaAPI new.
-	api temperature: 0.7.
-	api top_p: 0.9.
-	api stream: true.
-	answer := api query: prompt.
-	reader := NeoJSONReader on: (ZnCharacterReadStream on: answer).
-	[
-	[ reader atEnd ] whileFalse: [
-		| val |
-		val := reader next.
-		Transcript show: (val at: #response).
-		(val at: #done) ifTrue: [ answer close ] ] ] forkAt:
-		Processor lowIOPriority
+	api := LLMAPI chat.
+	api host: '127.0.0.1'.
+	api port: 11434.
+
+	api payload
+		temperature: 0.7;
+		top_p: 0.9;
+		top_p: 1;
+		model: 'devstral';
+		messages: {
+				(LLMAPIChatObjectMessage
+					 role: 'system'
+					 content: 'You are a usefull Pharo assistant').
+				(LLMAPIChatObjectMessage role: 'user' content: prompt) }.
+	answer := api performRequest.
+
+	Transcript show: answer
 ]
 
 { #category : 'execution' }
