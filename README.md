@@ -1,6 +1,6 @@
 # LLMDebugger
 
-This is an extension of the Pharo Debugger to query an LLM using the [Pharo HuggingFace API](https://github.com/Evref-BL/Pharo-HuggingFace) to do what ever we want.
+This is an extension of the Pharo Debugger to query an LLM using the [Pharo LLM project](https://github.com/Evref-BL/Pharo-LLMAPI) to do whatever we want.
 
 ## Installation
 
@@ -14,9 +14,6 @@ Metacello new
 ```
 
 Then, in Settings > Tools > Debugging > DebuggerExtension > LLMDebugger > Activate the extension.
-
-Also, set the [API key for hugging face](https://github.com/Evref-BL/Pharo-HuggingFace)
-
 
 ## Usage
 
