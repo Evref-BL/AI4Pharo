@@ -31,14 +31,11 @@ LLMCommentor >> buildMethodContext: aPharoMethod [
 
 { #category : 'as yet unclassified' }
 LLMCommentor >> buildPromptWithContext: aPharoMethod [
+	"Creates a prompt string by concatenating a context description with the result of building the method's context."
 
-	^ LLMPromptBuilder new
-		  role:
-			  'You are a smalltalk developper. You write a one line comment for the methods using the context.';
-		  context: (self buildMethodContext: aPharoMethod);
-		  task:
-			  'Your comment must summarize the method behavior. Only answer as smalltalk comment';
-		  buildPrompt
+	^ 'This is my context: ' , (self buildMethodContext: aPharoMethod)
+	  ,
+	  'Your comment must summarize the method behavior. Only answer as smalltalk comment'
 ]
 
 { #category : 'as yet unclassified' }
@@ -48,13 +45,12 @@ LLMCommentor >> generateCommentForMethod: aPharoMethod [
 	prompt := self buildPromptWithContext: aPharoMethod.
 	api payload
 		temperature: 0.5;
-		model: 'devstral';
 		top_p: 1;
 		max_tokens: 250;
 		messages: {
 				(LLMAPIChatObjectMessage
 					 role: 'system'
-					 content: 'You are a usefull assistant').
+					 content: 'You are a smalltalk developper. You write a one line comment for the methods using the context.').
 				(LLMAPIChatObjectMessage role: 'user' content: prompt) }.
 	comment := api performRequest.
 	^ comment
