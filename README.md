@@ -1,6 +1,7 @@
-# LLMDebugger
+# AI4Pharo
 
-This is an extension of the Pharo Debugger to query an LLM using the [Pharo LLM project](https://github.com/Evref-BL/Pharo-LLMAPI) to do whatever we want.
+This is an extension of the Pharo to integrate many LLM in the IDE.
+To query an LLM I use the [Pharo LLM project](https://github.com/Evref-BL/Pharo-LLMAPI) to do whatever we want.
 
 ## Installation
 
