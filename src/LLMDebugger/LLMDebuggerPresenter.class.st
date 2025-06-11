@@ -27,7 +27,7 @@ LLMDebuggerPresenter >> debuggerExtensionToolName [
 LLMDebuggerPresenter >> defaultLayout [
 	"An empty vertical box layout, for the moment"
 
-	^ SpPanedLayout newTopToBottom
+	^ SpBoxLayout newTopToBottom
 		  add: #chat;
 		  yourself
 ]
