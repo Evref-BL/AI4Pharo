@@ -38,11 +38,10 @@ StDebugger >> generateMethodFor: msg in: class [
 			           stream << msg numArgs printString.
 			           stream << ' arguments.'.
 			           stream << String crlf.
-			           stream << 'Generate the code' ].
+			           stream << 'Generate the code and only the code. Do not add any comment. It should compile and allows the execution' ].
 	api payload temperature: 0.7.
 	api payload model: 'devstral'.
 	api payload top_p: 0.9.
-	api payload stream: true.
 	api payload messages: {
 			(LLMAPIChatObjectMessage
 				 role: 'system'
