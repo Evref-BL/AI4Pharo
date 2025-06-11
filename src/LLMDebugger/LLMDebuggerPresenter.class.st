@@ -38,14 +38,45 @@ LLMDebuggerPresenter >> initializePresenters [
 
 	"There are no widget for the moment."
 
-	chat := LLMAPISpecChat new
+	| message |
+	chat := LLMAPISpecChat new.
+	
+	message := String streamContents: [ :stream |
+			stream
+			<<
+			'You are a smalltalk debugging assistant. Give me all pertinent information that I need to debug the error reported below. I give the the error name, then the code of the methods in the stack trace separated by ---.	Error Name: '.
+			stream
+			<<
+			 debugger debuggerActionModel statusStringForContext.
+			stream << String lf.
+			stream << String lf.
+			stream << '---'.
+			stream << String lf.
+			self relativeStackElements
+				do: [ :stack | stream << stack sourceCode ]
+				separatedBy: [
+						stream << String lf.
+						stream << String lf.
+						stream << '---'.
+						stream << String lf ].
+			stream << String lf.
+			stream << String lf.
+			stream << '---'.
+			stream << String lf.
+			stream << String lf.
+			stream
+			<<
+			'Help the user to fix the bug answering question with the given bug context' ].
+	chat history addMessage: (LLMAPIChatObjectMessage
+			 role: 'system'
+			 content: message)
 ]
 
 { #category : 'prompting' }
 LLMDebuggerPresenter >> relativeStackElements [
 
 	| stack doitIndex |
-	stack := self debugger stDebugger debuggerActionModel session
+	stack := debugger debuggerActionModel session
 		         stackOfSize: 5.
 	doitIndex := stack
 		             detectIndex: [ :el | el method isDoIt ]
