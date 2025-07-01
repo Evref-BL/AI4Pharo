@@ -1,6 +1,6 @@
 Class {
 	#name : 'LLMCCommentCommand',
-	#superclass : 'SycSourceCodeCommand',
+	#superclass : 'SycSourceCodeRefactoringCommand',
 	#traits : 'TRefactoringCommandSupport',
 	#classTraits : 'TRefactoringCommandSupport classTrait',
 	#category : 'LLMCode',
