@@ -23,10 +23,10 @@ Class {
 AI4ChatSpec class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: #'Open LLM Chat')
+	(aBuilder item: #'Open AI4Chat')
 		order: 1000;
 		action: [ self open ];
-		help: 'Open an LLM Chat wincow'
+		help: 'Open an AI4Chat wincow'
 ]
 
 { #category : 'examples' }
