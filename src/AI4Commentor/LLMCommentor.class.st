@@ -4,8 +4,8 @@ Class {
 	#instVars : [
 		'api'
 	],
-	#category : 'LLMCommentor',
-	#package : 'LLMCommentor'
+	#category : 'AI4Commentor',
+	#package : 'AI4Commentor'
 }
 
 { #category : 'as yet unclassified' }

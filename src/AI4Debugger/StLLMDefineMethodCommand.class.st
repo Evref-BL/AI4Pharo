@@ -1,8 +1,8 @@
 Class {
 	#name : 'StLLMDefineMethodCommand',
 	#superclass : 'StDefineMissingEntityCommand',
-	#category : 'LLMDebugger',
-	#package : 'LLMDebugger'
+	#category : 'AI4Debugger',
+	#package : 'AI4Debugger'
 }
 
 { #category : 'accessing' }

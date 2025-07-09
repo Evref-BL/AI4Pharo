@@ -13,6 +13,7 @@ LLMIceTipCommentPanel >> appendResultText: message [
 
 { #category : 'accessing' }
 LLMIceTipCommentPanel >> buildPrompt [
+	"Builds a prompt string by iterating through the working copy diff tree roots and their children, appending each child's key and value to the stream."
 
 	^ String streamContents: [ :stream |
 			  self repositoryModel workingCopyDiff treeRoots collect: [ :root |

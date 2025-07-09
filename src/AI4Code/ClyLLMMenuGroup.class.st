@@ -1,8 +1,8 @@
 Class {
 	#name : 'ClyLLMMenuGroup',
 	#superclass : 'CmdMenuGroup',
-	#category : 'LLMCode',
-	#package : 'LLMCode'
+	#category : 'AI4Code',
+	#package : 'AI4Code'
 }
 
 { #category : 'testing' }

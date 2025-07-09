@@ -1,6 +1,6 @@
 Class {
 	#name : 'SycLLMMenuActivation',
 	#superclass : 'CmdMenuCommandActivationStrategy',
-	#category : 'LLMCode',
-	#package : 'LLMCode'
+	#category : 'AI4Code',
+	#package : 'AI4Code'
 }

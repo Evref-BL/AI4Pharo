@@ -1,6 +1,6 @@
 Extension { #name : 'StDebugger' }
 
-{ #category : '*LLMDebugger' }
+{ #category : '*AI4Debugger' }
 StDebugger >> createMissingMethodAndGenerate [
 
 	| method |
@@ -10,7 +10,7 @@ StDebugger >> createMissingMethodAndGenerate [
 	code takeKeyboardFocus 
 ]
 
-{ #category : '*LLMDebugger' }
+{ #category : '*AI4Debugger' }
 StDebugger >> generateMethodFor: msg in: class [
 
 	| api aPrompt |

@@ -3,8 +3,8 @@ Class {
 	#superclass : 'SycSourceCodeRefactoringCommand',
 	#traits : 'TRefactoringCommandSupport',
 	#classTraits : 'TRefactoringCommandSupport classTrait',
-	#category : 'LLMCode',
-	#package : 'LLMCode'
+	#category : 'AI4Code',
+	#package : 'AI4Code'
 }
 
 { #category : 'activation' }

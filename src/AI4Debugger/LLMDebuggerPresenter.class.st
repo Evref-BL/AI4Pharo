@@ -7,8 +7,8 @@ Class {
 		'debugger',
 		'chat'
 	],
-	#category : 'LLMDebugger',
-	#package : 'LLMDebugger'
+	#category : 'AI4Debugger',
+	#package : 'AI4Debugger'
 }
 
 { #category : 'initialization' }

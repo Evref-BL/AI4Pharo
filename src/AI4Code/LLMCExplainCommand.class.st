@@ -7,8 +7,8 @@ Class {
 		'selectedTextInterval',
 		'codeSelected'
 	],
-	#category : 'LLMCode',
-	#package : 'LLMCode'
+	#category : 'AI4Code',
+	#package : 'AI4Code'
 }
 
 { #category : 'activation' }

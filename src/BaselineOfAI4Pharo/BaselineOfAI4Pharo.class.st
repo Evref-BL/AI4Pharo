@@ -31,12 +31,9 @@ BaselineOfAI4Pharo >> defineGroups: spec [
 { #category : 'baselines' }
 BaselineOfAI4Pharo >> definePackages: spec [
 
-	spec package: 'LLMDebugger' with: [
-		spec requires:
-			#( 'LLMAPI' ) ].
-	spec
-		package: 'AI4Iceberg'
-		with: [ spec requires: #( 'LLMAPI' ) ].
-	spec package: 'LLMCommentor'.
-	spec package: 'LLMCode'
+	spec package: 'AI4Debugger' with: [ spec requires: #( 'LLMAPI' ) ].
+	spec package: 'AI4Iceberg' with: [ spec requires: #( 'LLMAPI' ) ].
+	spec package: 'AI4Chat' with: [ spec requires: #( 'LLMAPI' ) ].
+	spec package: 'AI4Commentor'.
+	spec package: 'AI4Code'
 ]
