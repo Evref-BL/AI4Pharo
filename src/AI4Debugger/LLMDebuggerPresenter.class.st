@@ -39,7 +39,7 @@ LLMDebuggerPresenter >> initializePresenters [
 	"There are no widget for the moment."
 
 	| message |
-	chat := LLMAPISpecChat new.
+	chat := AI4ChatSpecChat new.
 	
 	message := String streamContents: [ :stream |
 			stream

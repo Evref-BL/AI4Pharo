@@ -34,6 +34,7 @@ BaselineOfAI4Pharo >> definePackages: spec [
 	spec package: 'AI4Debugger' with: [ spec requires: #( 'LLMAPI' ) ].
 	spec package: 'AI4Iceberg' with: [ spec requires: #( 'LLMAPI' ) ].
 	spec package: 'AI4Chat' with: [ spec requires: #( 'LLMAPI' ) ].
+	spec package: 'AI4Chat-Tests' with: [ spec requires: #( 'AI4Chat' ) ].
 	spec package: 'AI4Commentor'.
 	spec package: 'AI4Code'
 ]
