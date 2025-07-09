@@ -9,7 +9,7 @@ Class {
 	#tag : 'Tools'
 }
 
-{ #category : 'initialization' }
+{ #category : 'api' }
 AI4ChatClassCommentTool >> commentOfClass: aClassOrClassString [
 
 	| class |

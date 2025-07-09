@@ -6,7 +6,7 @@ Class {
 	#tag : 'Tools'
 }
 
-{ #category : 'initialization' }
+{ #category : 'api' }
 AI4ChatClassDefinitionTool >> definitionOfClass: aClassString [
 	| class |
 	class := self class environment

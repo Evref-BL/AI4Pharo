@@ -9,7 +9,7 @@ Class {
 	#tag : 'Tools'
 }
 
-{ #category : 'initialization' }
+{ #category : 'execution' }
 AI4ChatEvalPharoTool >> executeWithArguments: arguments [
 	"Implement this if you want to extend tools and use its default mecanism"
 
