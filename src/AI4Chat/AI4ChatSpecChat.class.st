@@ -28,8 +28,9 @@ AI4ChatSpecChat >> askLLM [
 	api payload
 		temperature: 0.5;
 		top_p: 1;
-		tools:
-			(LLMAPIChatObjectTool allSubclasses collect: [ :clazz | clazz new ]);
+		tools: (LLMAPIChatObjectTool allSubclasses
+				 select: [ :class | class package name = 'AI4Chat' ]
+				 thenCollect: [ :clazz | clazz new ]);
 		messages: history model.
 
 	result := api performRequest.
