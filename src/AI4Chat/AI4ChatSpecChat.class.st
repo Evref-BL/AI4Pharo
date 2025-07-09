@@ -32,7 +32,6 @@ AI4ChatSpecChat >> askLLM [
 				 select: [ :class | class package name = 'AI4Chat' ]
 				 thenCollect: [ :clazz | clazz new ]);
 		messages: history model.
-
 	result := api performRequest.
 	resultContent := result.
 	history addMessage:
